@@ -9,4 +9,4 @@ Please note: This project is still in a very early stage!
 It lacks most of the functionality.
 
 ## License
-[MIT](https://github.com/Capure/vulcan-api-js/blob/master/README.md)
+[MIT](https://github.com/Capure/vulcan-api-js/blob/master/LICENSE)
