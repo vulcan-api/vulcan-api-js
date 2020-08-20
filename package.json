@@ -1,0 +1,16 @@
+{
+  "name": "vulcan-api-js",
+  "version": "1.0.0",
+  "description": "Unofficial API for UONET+ e-register from Vulcan.",
+  "main": "index.js",
+  "repository": "https://github.com/Capure/vulcan-api-js.git",
+  "author": "Capure",
+  "license": "MIT",
+  "type": "module",
+  "dependencies": {
+    "@wulkanowy/uonet-request-signer": "^0.2.1",
+    "axios": "^0.19.2",
+    "querystring": "^0.2.0",
+    "uuid": "^8.3.0"
+  }
+}
