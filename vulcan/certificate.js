@@ -7,8 +7,7 @@ import {
     APP_NAME
 } from './utils.js';
 import axios from 'axios';
-export class Certificate{
-    async get(inputToken, inputSymbol, inputPin){
+export const getCertificate = async (inputToken, inputSymbol, inputPin) => {
         const token = inputToken.toString().toUpperCase();
         const symbol = inputSymbol.toString().toLowerCase();
         const pin = inputPin.toString();
@@ -47,5 +46,3 @@ export class Certificate{
             "AdresBazowyRestApi": cert["AdresBazowyRestApi"]
         }
     }
-
-}
