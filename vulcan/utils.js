@@ -1,12 +1,12 @@
 import { v4 as uuidv4 } from 'uuid';
-import signer from '@wulkanowy/uonet-request-signer';
 import axios from 'axios';
 import qs from 'querystring';
+import { signContent } from './signer.js';
 export const APP_NAME = "VULCAN-Android-ModulUcznia";
 export const APP_VERSION = "18.10.1.433";
 export const now = () => {return Math.floor(Date.now() / 1000)};
 export const uuid = () => {return uuidv4()};
-export const signature = async (cert, data) => {return await signer.signContent("CE75EA598C7743AD9B0B7328DED85B06", cert, data)}
+export const signature = async (cert, data) => {return await signContent("CE75EA598C7743AD9B0B7328DED85B06", cert, data)}
 export const getComponents = async () => {
     let r = await axios.get('http://komponenty.vulcan.net.pl/UonetPlusMobile/RoutingRules.txt');
     const components = r.data.split('\r\n');
