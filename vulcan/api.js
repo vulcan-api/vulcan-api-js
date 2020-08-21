@@ -70,19 +70,29 @@ export class Api{
     // Student
 
     async getStudents() {
-        const jsonData = await this.post(this.baseUrl + "UczenStart/ListaUczniow");
-        let studentsArrayToReturn = [];
-        jsonData.Data.forEach(student => {
-            studentsArrayToReturn.push(student);
-        });
-        return studentsArrayToReturn;
+        try {
+            const jsonData = await this.post(this.baseUrl + "UczenStart/ListaUczniow");
+            let studentsArrayToReturn = [];
+            jsonData.Data.forEach(student => {
+                studentsArrayToReturn.push(student);
+            });
+            return studentsArrayToReturn;
+        } catch (e) {
+            throw "Failed fetching students!";
+        }
     }
 
     async setStudent(student){
         this.student = student;
         this.fullUrl = this.cert["AdresBazowyRestApi"] + student["JednostkaSprawozdawczaSymbol"] + "/mobile-api/Uczen.v3.";
-        const jsonData = await this.post("Uczen/Slowniki");
-        this.dictionaries = jsonData.Data;
+        try {
+            const jsonData = await this.post("Uczen/Slowniki");
+            this.dictionaries = jsonData.Data;
+        } catch (e) {
+            this.student = undefined;
+            this.fullUrl = undefined;
+            throw "Failed setting student!";
+        }
     }
 
     // Dictionaries
@@ -165,23 +175,27 @@ export class Api{
 
     // Grades
     async getGrades(){
-        const jsonData = await this.post("Uczen/Oceny");
-        let gradesToReturn = [];
-        jsonData.Data.map(item => {
-            gradesToReturn.push({
-                "id": item["Id"],
-                "content": item["Wpis"],
-                "weight": item["WagaOceny"],
-                "description": item["Opis"],
-                "date": item["DataUtworzeniaTekst"],
-                "lastModificationDate": item["DataModyfikacjiTekst"],
-                "value": item["Wartosc"],
-                "teacher": this.getTeacherFromDict(item["IdPracownikD"]),
-                "subject": this.getSubjectFromDict(item["IdPrzedmiot"]),
-                "category": this.getGradeCategoryFromDict(item["IdKategoria"])
+        try {
+            const jsonData = await this.post("Uczen/Oceny");
+            let gradesToReturn = [];
+            jsonData.Data.map(item => {
+                gradesToReturn.push({
+                    "id": item["Id"],
+                    "content": item["Wpis"],
+                    "weight": item["WagaOceny"],
+                    "description": item["Opis"],
+                    "date": item["DataUtworzeniaTekst"],
+                    "lastModificationDate": item["DataModyfikacjiTekst"],
+                    "value": item["Wartosc"],
+                    "teacher": this.getTeacherFromDict(item["IdPracownikD"]),
+                    "subject": this.getSubjectFromDict(item["IdPrzedmiot"]),
+                    "category": this.getGradeCategoryFromDict(item["IdKategoria"])
+                });
             });
-        });
-        return gradesToReturn;
+            return gradesToReturn;
+        } catch (e) {
+            throw "Failed fetching grades!";
+        }
     }
 
     // Lessons
@@ -192,33 +206,37 @@ export class Api{
         }
         let dateStr = date.getUTCFullYear().toString() + "-" + date.getUTCMonth().toString() + "-" + date.getUTCDate().toString();
         let data = {"DataPoczatkowa": dateStr, "DataKoncowa": dateStr};
-        const jsonData = await this.post("Uczen/PlanLekcjiZeZmianami", data);
+        try {
+            const jsonData = await this.post("Uczen/PlanLekcjiZeZmianami", data);
 
-        let lessons = jsonData.Data.sort((a, b) => {
-            if (a["NumerLekcji"] < b["NumerLekcji"]){
-                return -1;
-            }
-            if (a["NumerLekcji"] > b["NumerLekcji"]){
-                return 1;
-            }
-            return 0;
-        });
-
-        let lessonsToReturn = [];
-
-        lessons.map(item => {
-            lessonsToReturn.push({
-                "number": item["NumerLekcji"],
-                "room": item["Sala"],
-                "group": item["PodzialSkrot"],
-                "date": item["DzienTekst"],
-                "time": this.getLessonTimeFromDict(item["IdPoraLekcji"]),
-                "teacher": this.getTeacherFromDict(item["IdPracownik"]),
-                "subject": this.getSubjectFromDict(item["IdPrzedmiot"])
+            let lessons = jsonData.Data.sort((a, b) => {
+                if (a["NumerLekcji"] < b["NumerLekcji"]){
+                    return -1;
+                }
+                if (a["NumerLekcji"] > b["NumerLekcji"]){
+                    return 1;
+                }
+                return 0;
             });
-        });
 
-        return lessonsToReturn;
+            let lessonsToReturn = [];
+
+            lessons.map(item => {
+                lessonsToReturn.push({
+                    "number": item["NumerLekcji"],
+                    "room": item["Sala"],
+                    "group": item["PodzialSkrot"],
+                    "date": item["DzienTekst"],
+                    "time": this.getLessonTimeFromDict(item["IdPoraLekcji"]),
+                    "teacher": this.getTeacherFromDict(item["IdPracownik"]),
+                    "subject": this.getSubjectFromDict(item["IdPrzedmiot"])
+                });
+            });
+
+            return lessonsToReturn;
+        } catch (e) {
+            throw "Failed fetching lessons!";
+        }
     }
 
     // Exams
@@ -229,30 +247,34 @@ export class Api{
         }
         let dateStr = date.getUTCFullYear().toString() + "-" + date.getUTCMonth().toString() + "-" + date.getUTCDate().toString();
         let data = {"DataPoczatkowa": dateStr, "DataKoncowa": dateStr};
-        const jsonData = await this.post("Uczen/Sprawdziany", data);
+        try {
+            const jsonData = await this.post("Uczen/Sprawdziany", data);
 
-        // TODO implement sort / understand why is it even needed in the first place ;D
+            // TODO implement sort / understand why is it even needed in the first place ;D
 
-        let examsToReturn = [];
+            let examsToReturn = [];
 
-        const examType = { // This could be replaced with enum in TS
-            1: "EXAM",
-            2: "SHORT_TEST",
-            3: "CLASS_TEST"
-        }
+            const examType = { // This could be replaced with enum in TS
+                1: "EXAM",
+                2: "SHORT_TEST",
+                3: "CLASS_TEST"
+            }
 
-        jsonData.Data.map(item => {
-            examsToReturn.push({
-                "id": item["Id"],
-                "type": examType[item["RodzajNumer"]],
-                "description": item["Opis"],
-                "date": item["DataTekst"],
-                "teacher": this.getTeacherFromDict(item["IdPracownik"]),
-                "subject": this.getSubjectFromDict(item["IdPrzedmiot"])
+            jsonData.Data.map(item => {
+                examsToReturn.push({
+                    "id": item["Id"],
+                    "type": examType[item["RodzajNumer"]],
+                    "description": item["Opis"],
+                    "date": item["DataTekst"],
+                    "teacher": this.getTeacherFromDict(item["IdPracownik"]),
+                    "subject": this.getSubjectFromDict(item["IdPrzedmiot"])
+                });
             });
-        });
 
-        return examsToReturn;
+            return examsToReturn;
+        } catch (e) {
+            throw "Failed fetching exams!";
+        }
     }
 
     // Homework
@@ -263,23 +285,27 @@ export class Api{
         }
         let dateStr = date.getUTCFullYear().toString() + "-" + date.getUTCMonth().toString() + "-" + date.getUTCDate().toString();
         let data = {"DataPoczatkowa": dateStr, "DataKoncowa": dateStr};
-        const jsonData = await this.post("Uczen/ZadaniaDomowe", data);
+        try {
+            const jsonData = await this.post("Uczen/ZadaniaDomowe", data);
 
-        // TODO implement sort / understand why is it even needed in the first place ;D
+            // TODO implement sort / understand why is it even needed in the first place ;D
 
-        let homeworkToReturn = [];
+            let homeworkToReturn = [];
 
-        jsonData.Data.map(item => {
-            homeworkToReturn.push({
-                "id": item["Id"],
-                "description": item["Opis"],
-                "date": item["DataTekst"],
-                "teacher": this.getTeacherFromDict(item["IdPracownik"]),
-                "subject": this.getSubjectFromDict(item["IdPrzedmiot"])
+            jsonData.Data.map(item => {
+                homeworkToReturn.push({
+                    "id": item["Id"],
+                    "description": item["Opis"],
+                    "date": item["DataTekst"],
+                    "teacher": this.getTeacherFromDict(item["IdPracownik"]),
+                    "subject": this.getSubjectFromDict(item["IdPrzedmiot"])
+                });
             });
-        });
 
-        return homeworkToReturn;
+            return homeworkToReturn;
+        } catch (e) {
+            throw "Failed fetching the homework!";
+        }
     }
 
     // Messages
@@ -294,32 +320,36 @@ export class Api{
         let dateFromStr = dateFrom.getUTCFullYear().toString() + "-" + dateFrom.getUTCMonth().toString() + "-" + dateFrom.getUTCDate().toString();
         let dateToStr = dateTo.getUTCFullYear().toString() + "-" + dateTo.getUTCMonth().toString() + "-" + dateTo.getUTCDate().toString();
         let data = {"DataPoczatkowa": dateFromStr, "DataKoncowa": dateToStr};
-        const jsonData = await this.post("Uczen/WiadomosciOdebrane", data);
+        try {
+            const jsonData = await this.post("Uczen/WiadomosciOdebrane", data);
 
-        let messagesToReturn = [];
+            let messagesToReturn = [];
 
-        jsonData.Data.map(item => {
-            let messageRecipients = [];
-            item["Adresaci"].map(innerItem => {
-                messageRecipients.push({
-                    "loginId": innerItem["LoginId"],
-                    "name": innerItem["Nazwa"]
+            jsonData.Data.map(item => {
+                let messageRecipients = [];
+                item["Adresaci"].map(innerItem => {
+                    messageRecipients.push({
+                        "loginId": innerItem["LoginId"],
+                        "name": innerItem["Nazwa"]
+                    });
+                });
+                messagesToReturn.push({
+                    "id": item["WiadomoscId"],
+                    "senderId": item["NadawcaId"],
+                    "recipients": messageRecipients,
+                    "title": item["Tytul"],
+                    "content": item["Tresc"],
+                    "sentDate": item["DataWyslania"],
+                    "sentTime": item["GodzinaWyslania"],
+                    "readDate": item["DataPrzeczytania"],
+                    "readTime": item["GodzinaPrzeczytania"],
+                    "sender": this.getTeacherByLoginIdFromDict(item["NadawcaId"])
                 });
             });
-            messagesToReturn.push({
-                "id": item["WiadomoscId"],
-                "senderId": item["NadawcaId"],
-                "recipients": messageRecipients,
-                "title": item["Tytul"],
-                "content": item["Tresc"],
-                "sentDate": item["DataWyslania"],
-                "sentTime": item["GodzinaWyslania"],
-                "readDate": item["DataPrzeczytania"],
-                "readTime": item["GodzinaPrzeczytania"],
-                "sender": this.getTeacherByLoginIdFromDict(item["NadawcaId"])
-            });
-        });
 
-        return messagesToReturn;
+            return messagesToReturn;
+        } catch (e) {
+            throw "Failed fetching messages!";
+        }
     }
 }
