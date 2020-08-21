@@ -69,11 +69,119 @@ export class Api{
 
     // Student
 
+    async getStudents() {
+        const jsonData = await this.post(this.baseUrl + "UczenStart/ListaUczniow");
+        let studentsArrayToReturn = [];
+        jsonData.Data.forEach(student => {
+            studentsArrayToReturn.push(student);
+        });
+        return studentsArrayToReturn;
+    }
+
     async setStudent(student){
         this.student = student;
         this.fullUrl = this.cert["AdresBazowyRestApi"] + student["JednostkaSprawozdawczaSymbol"] + "/mobile-api/Uczen.v3.";
         const jsonData = await this.post("Uczen/Slowniki");
         this.dictionaries = jsonData.Data;
+    }
+
+    // Dictionaries
+
+    getLessonTimeFromDict(lessonTimeId){
+        let objToReturn = null;
+        this.dictionaries["PoryLekcji"].map(item => {
+            if (item.Id === lessonTimeId){
+                objToReturn = {
+                    "id": item["Id"],
+                    "number": item["Numer"],
+                    "from": item["PoczatekTekst"],
+                    "to": item["KoniecTekst"]
+                }
+            }
+        });
+        return objToReturn;
+    }
+
+    getTeacherFromDict(teacherId){
+        let objToReturn = null;
+        this.dictionaries["Pracownicy"].map(item => {
+            if (item.Id === teacherId){
+                objToReturn = {
+                    "id": item["Id"],
+                    "firstName": item["Imie"],
+                    "lastName": item["Nazwisko"],
+                    "short": item["Kod"],
+                    "loginId": item["LoginId"]
+                }
+            }
+        });
+        return objToReturn;
+    }
+
+    getTeacherByLoginIdFromDict(teacherLoginId){
+        let objToReturn = null;
+        this.dictionaries["Pracownicy"].map(item => {
+            if (item.LoginId === teacherLoginId){
+                objToReturn = {
+                    "id": item["Id"],
+                    "firstName": item["Imie"],
+                    "lastName": item["Nazwisko"],
+                    "short": item["Kod"],
+                    "loginId": item["LoginId"]
+                }
+            }
+        });
+        return objToReturn;
+    }
+
+    getSubjectFromDict(subjectId){
+        let objToReturn = null;
+        this.dictionaries["Przedmioty"].map(item => {
+            if (item.Id === subjectId){
+                objToReturn = {
+                    "id": item["Id"],
+                    "name": item["Nazwa"],
+                    "short": item["Kod"],
+                    "postion": item["Pozycja"]
+                }
+            }
+        });
+        return objToReturn;
+    }
+
+    getGradeCategoryFromDict(gradeCategoryId){
+        let objToReturn = null;
+        this.dictionaries["KategorieOcen"].map(item => {
+            if (item.Id === gradeCategoryId){
+                objToReturn = {
+                    "id": item["Id"],
+                    "name": item["Nazwa"],
+                    "short": item["Kod"]
+                }
+            }
+        });
+        return objToReturn;
+    }
+
+    // Grades
+    async getGrades(){
+        const jsonData = await this.post("Uczen/Oceny");
+        let gradesToReturn = [];
+        jsonData.Data.map(item => {
+            gradesToReturn.push({
+                "id": item["Id"],
+                "content": item["Wpis"],
+                "weight": item["WagaOceny"],
+                "description": item["Opis"],
+                "date": item["DataUtworzeniaTekst"],
+                "lastModificationDate": item["DataModyfikacjiTekst"],
+                "value": item["Wartosc"],
+                "teacher": this.getTeacherFromDict(item["IdPracownikD"]),
+                "subject": this.getSubjectFromDict(item["IdPrzedmiot"]),
+                "category": this.getGradeCategoryFromDict(item["IdKategoria"])
+            });
+        });
+        return gradesToReturn;
     }
 
     // Lessons
@@ -99,57 +207,119 @@ export class Api{
         let lessonsToReturn = [];
 
         lessons.map(item => {
-            let lesson = {
+            lessonsToReturn.push({
                 "number": item["NumerLekcji"],
                 "room": item["Sala"],
                 "group": item["PodzialSkrot"],
-                "date": item["DzienTekst"]
-            };
-            this.dictionaries["PoryLekcji"].map(innerItem => {
-                if (innerItem.Id === item["IdPoraLekcji"]){
-                    lesson["time"] = {
-                        "id": innerItem.Id,
-                        "number": innerItem["Numer"],
-                        "from": innerItem["PoczatekTekst"],
-                        "to": innerItem["KoniecTekst"]
-                    }
-                }
+                "date": item["DzienTekst"],
+                "time": this.getLessonTimeFromDict(item["IdPoraLekcji"]),
+                "teacher": this.getTeacherFromDict(item["IdPracownik"]),
+                "subject": this.getSubjectFromDict(item["IdPrzedmiot"])
             });
-            if (lesson.time === undefined){
-                lessons["time"] = null;
-            }
-            this.dictionaries["Pracownicy"].map(innerItem => {
-                if (innerItem.Id === item["IdPracownik"]){
-                    lesson["teacher"] = {
-                        "id": innerItem.Id,
-                        "firstName": innerItem["Imie"],
-                        "lastName": innerItem["Nazwisko"],
-                        "short": innerItem["Kod"],
-                        "loginId": innerItem["LoginId"]
-                    }
-                }
-            });
-            if (lesson.teacher === undefined){
-                lessons["teacher"] = null;
-            }
-
-            this.dictionaries["Przedmioty"].map(innerItem => {
-                if (innerItem.Id === item["IdPrzedmiot"]){
-                    lesson["subject"] = {
-                        "id": innerItem.Id,
-                        "name": innerItem["Nazwa"],
-                        "short": innerItem["Kod"],
-                        "postion": innerItem["Pozycja"]
-                    }
-                }
-            })
-            if (lesson.subject === undefined){
-                lessons["subject"] = null;
-            }
-
-            lessonsToReturn.push(lesson);
         });
 
         return lessonsToReturn;
+    }
+
+    // Exams
+
+    async getExams(date=undefined){
+        if(date === undefined){
+            date = new Date();
+        }
+        let dateStr = date.getUTCFullYear().toString() + "-" + date.getUTCMonth().toString() + "-" + date.getUTCDate().toString();
+        let data = {"DataPoczatkowa": dateStr, "DataKoncowa": dateStr};
+        const jsonData = await this.post("Uczen/Sprawdziany", data);
+
+        // TODO implement sort / understand why is it even needed in the first place ;D
+
+        let examsToReturn = [];
+
+        const examType = { // This could be replaced with enum in TS
+            1: "EXAM",
+            2: "SHORT_TEST",
+            3: "CLASS_TEST"
+        }
+
+        jsonData.Data.map(item => {
+            examsToReturn.push({
+                "id": item["Id"],
+                "type": examType[item["RodzajNumer"]],
+                "description": item["Opis"],
+                "date": item["DataTekst"],
+                "teacher": this.getTeacherFromDict(item["IdPracownik"]),
+                "subject": this.getSubjectFromDict(item["IdPrzedmiot"])
+            });
+        });
+
+        return examsToReturn;
+    }
+
+    // Homework
+
+    async getHomework(date=undefined){   // WARNING! I don't have a way to test this!
+        if(date === undefined){
+            date = new Date();
+        }
+        let dateStr = date.getUTCFullYear().toString() + "-" + date.getUTCMonth().toString() + "-" + date.getUTCDate().toString();
+        let data = {"DataPoczatkowa": dateStr, "DataKoncowa": dateStr};
+        const jsonData = await this.post("Uczen/ZadaniaDomowe", data);
+
+        // TODO implement sort / understand why is it even needed in the first place ;D
+
+        let homeworkToReturn = [];
+
+        jsonData.Data.map(item => {
+            homeworkToReturn.push({
+                "id": item["Id"],
+                "description": item["Opis"],
+                "date": item["DataTekst"],
+                "teacher": this.getTeacherFromDict(item["IdPracownik"]),
+                "subject": this.getSubjectFromDict(item["IdPrzedmiot"])
+            });
+        });
+
+        return homeworkToReturn;
+    }
+
+    // Messages
+
+    async getMessages(dateFrom=undefined, dateTo=undefined){
+        if(dateFrom === undefined){
+            dateFrom = new Date(this.student["OkresDataOdTekst"]);
+        }
+        if(dateTo === undefined){
+            dateTo = new Date(this.student["OkresDataDoTekst"]);
+        }
+        let dateFromStr = dateFrom.getUTCFullYear().toString() + "-" + dateFrom.getUTCMonth().toString() + "-" + dateFrom.getUTCDate().toString();
+        let dateToStr = dateTo.getUTCFullYear().toString() + "-" + dateTo.getUTCMonth().toString() + "-" + dateTo.getUTCDate().toString();
+        let data = {"DataPoczatkowa": dateFromStr, "DataKoncowa": dateToStr};
+        const jsonData = await this.post("Uczen/WiadomosciOdebrane", data);
+
+        let messagesToReturn = [];
+
+        jsonData.Data.map(item => {
+            let messageRecipients = [];
+            item["Adresaci"].map(innerItem => {
+                messageRecipients.push({
+                    "loginId": innerItem["LoginId"],
+                    "name": innerItem["Nazwa"]
+                });
+            });
+            messagesToReturn.push({
+                "id": item["WiadomoscId"],
+                "senderId": item["NadawcaId"],
+                "recipients": messageRecipients,
+                "title": item["Tytul"],
+                "content": item["Tresc"],
+                "sentDate": item["DataWyslania"],
+                "sentTime": item["GodzinaWyslania"],
+                "readDate": item["DataPrzeczytania"],
+                "readTime": item["GodzinaPrzeczytania"],
+                "sender": this.getTeacherByLoginIdFromDict(item["NadawcaId"])
+            });
+        });
+
+        return messagesToReturn;
     }
 }

@@ -1,6 +1,5 @@
 import { getCertificate } from "./certificate.js";
 import {Api} from './api.js';
-import { getStudents } from './student.js';
 
 export const register = (token, symbol, pin) => {
     return getCertificate(token, symbol, pin);
@@ -12,15 +11,24 @@ export class Vulcan{
         this.api = new Api(cert);
     }
     getStudents(){
-        return getStudents(this.api);
+        return this.api.getStudents();
     }
     setStudent(student){
         return this.api.setStudent(student);
     }
-    dictionaries(){
-        return this.api.dictionaries;
+    getGrades(){
+        return this.api.getGrades();
     }
     getLessons(date=undefined){
         return this.api.getLessons(date);
+    }
+    getExams(date=undefined){
+        return this.api.getExams(date);
+    }
+    getHomework(date=undefined){     // WARNING! I don't have a way to test this!
+        return this.api.getHomework(date);
+    }
+    getMessages(dateFrom=undefined, dateTo=undefined){
+        return this.api.getMessages(dateFrom, dateTo);
     }
 }
