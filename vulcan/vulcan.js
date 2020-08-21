@@ -14,4 +14,13 @@ export class Vulcan{
     getStudents(){
         return getStudents(this.api);
     }
+    setStudent(student){
+        return this.api.setStudent(student);
+    }
+    dictionaries(){
+        return this.api.dictionaries;
+    }
+    getLessons(date=undefined){
+        return this.api.getLessons(date);
+    }
 }
