@@ -5,6 +5,7 @@
 First you need to create a certificate
 
 ```js
+// TODO: update this part
 import { getCertificate } from './vulcan/certificate.js';
 
 getCertificate("{token}", "{symbol}", "{pin}).then(cert => {
@@ -15,9 +16,9 @@ getCertificate("{token}", "{symbol}", "{pin}).then(cert => {
 ```
 Then you will have to set the student
 ```js
-import { Vulcan } from './vulcan/vulcan.js';
+const Vulcan = require('./lib/index.js');
 
-let vulcan = new Vulcan({"Your certificate"});
+let vulcan = new Vulcan.Vulcan({"Your certificate"});
 
 vulcan.getStudents().then(students => {
     students.map(student => {

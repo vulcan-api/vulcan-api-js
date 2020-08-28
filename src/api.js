@@ -8,14 +8,12 @@ import {
 import axios from 'axios';
 
 export class Api{
-    cert = undefined;
-    fullUrl = undefined;
-    baseUrl = undefined;
-    student = undefined;
-    dictionaries = undefined;
     constructor(cert){
         this.cert = cert;
         this.baseUrl = cert["AdresBazowyRestApi"] + "mobile-api/Uczen.v3.";
+        this.fullUrl = undefined;
+        this.student = undefined;
+        this.dictionaries = undefined;
     }
     payload(json = undefined){
         let payload = {

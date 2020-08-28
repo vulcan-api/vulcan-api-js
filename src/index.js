@@ -7,7 +7,6 @@ export const register = (token, symbol, pin) => {
 }
 
 export class Vulcan{
-    api = undefined;
     constructor(cert){
         if (isAValidCertObj(cert)){
             this.api = new Api(cert);

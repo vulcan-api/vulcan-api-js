@@ -2,6 +2,7 @@ import { v4 as uuidv4 } from 'uuid';
 import axios from 'axios';
 import qs from 'querystring';
 import { signContent } from './signer.js';
+import regeneratorRuntime from "regenerator-runtime"; // for babel
 export const APP_NAME = "VULCAN-Android-ModulUcznia";
 export const APP_VERSION = "18.10.1.433";
 export const now = () => {return Math.floor(Date.now() / 1000)};
