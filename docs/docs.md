@@ -8,7 +8,7 @@ First you need to create a certificate
 // TODO: update this part
 import { getCertificate } from './vulcan/certificate.js';
 
-getCertificate("{token}", "{symbol}", "{pin}).then(cert => {
+getCertificate("{token}", "{symbol}", "{pin}").then(cert => {
   // Do something with the certificate
   // You probably want to save it to a file
 });
