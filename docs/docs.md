@@ -17,8 +17,7 @@ npm install vulcan-api-js --save
 First you need to create a certificate
 
 ```js
-// TODO: update this part
-const Vulcan = require('./lib/index.js');
+const Vulcan = require('vulcan-api-js');
 
 Vulcan.getCertificate("{token}", "{symbol}", "{pin}").then(cert => {
   // Do something with the certificate
@@ -28,7 +27,7 @@ Vulcan.getCertificate("{token}", "{symbol}", "{pin}").then(cert => {
 ```
 Then you will have to set the student
 ```js
-const Vulcan = require('./lib/index.js');
+const Vulcan = require('vulcan-api-js');
 
 let vulcan = new Vulcan.Vulcan({"Your certificate"});
 

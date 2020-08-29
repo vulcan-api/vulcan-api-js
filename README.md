@@ -8,7 +8,7 @@ You will find some basic docs [here](https://github.com/Capure/vulcan-api-js/blo
 ## Work in progress
 Please note: This project is still in a very early stage!
 
-It lacks most of the functionality.
+It lacks some of the functionality.
 
 ## License
 [MIT](https://github.com/Capure/vulcan-api-js/blob/master/LICENSE)
