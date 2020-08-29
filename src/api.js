@@ -76,7 +76,7 @@ export class Api{
             });
             return studentsArrayToReturn;
         } catch (e) {
-            throw "Failed fetching students!";
+            throw Error("Failed fetching students!");
         }
     }
 

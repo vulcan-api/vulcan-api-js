@@ -1,14 +1,26 @@
 # Docs - vulcan-api-js
 
+## Installation
+
+#### YARN
+```
+yarn add vulcan-api-js
+```
+
+#### NPM
+```
+npm install vulcan-api-js --save
+```
+
 ## Usage
 
 First you need to create a certificate
 
 ```js
 // TODO: update this part
-import { getCertificate } from './vulcan/certificate.js';
+const Vulcan = require('./lib/index.js');
 
-getCertificate("{token}", "{symbol}", "{pin}").then(cert => {
+Vulcan.getCertificate("{token}", "{symbol}", "{pin}").then(cert => {
   // Do something with the certificate
   // You probably want to save it to a file
 });
@@ -40,3 +52,23 @@ vulcan.getStudents().then(students => {
 - getHomework(date) - date is not required
 - getMessages(dateFrom, dateTo) - dateFrom and dateTo are not required
 ### All the methods in vulcan-api-js return a promise!
+
+## Development
+
+### Running tests
+
+The tests are running in a live environment so you will have to supply your certificate in the .env file.
+
+#### YARN
+```
+yarn test
+```
+
+#### NPM
+```
+npm run test
+```
+
+### Contributing
+
+Honestly, any contribution would be welcome 😉

@@ -4,7 +4,8 @@
   "description": "Unofficial API for UONET+ e-register from Vulcan.",
   "main": "lib/index.js",
   "scripts": {
-    "prepublish": "babel src --out-dir lib"
+    "prepublish": "babel src --out-dir lib",
+    "test": "mocha --reporter spec"
   },
   "repository": "https://github.com/Capure/vulcan-api-js.git",
   "author": "Capure",
@@ -21,7 +22,10 @@
     "@babel/core": "^7.11.4",
     "@babel/plugin-proposal-object-rest-spread": "^7.11.0",
     "@babel/preset-env": "^7.11.0",
-    "mocha": "^6.0.2"
+    "mocha": "^6.0.2",
+    "chai": "^4.2.0",
+    "chai-as-promised": "^7.1.1",
+    "dotenv": "^8.2.0"
   },
   "optionalDependencies": {
     "node-webcrypto-ossl": "^1.0.42"

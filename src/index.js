@@ -17,11 +17,11 @@ export class Vulcan{
     getStudents(){
         return this.api.getStudents();
     }
-    setStudent(student){
+    async setStudent(student){
         if (!isAValidStudentObj(student)){
-            throw "Invalid student obj!";
+            throw Error("Invalid student obj!");
         }
-        return this.api.setStudent(student);
+        return await this.api.setStudent(student);
     }
     getGrades(){
         return this.api.getGrades();
