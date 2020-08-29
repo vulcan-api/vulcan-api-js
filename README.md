@@ -1,5 +1,6 @@
 # vulcan-api-js
 Unoffical Vulcan UONET+ SDK for JavaScript
+[![NPM](https://nodei.co/npm/vulcan-api-js.png?downloads=true&downloadRank=true&stars=true)](https://nodei.co/npm/vulcan-api-js/)
 
 ## Description
 This project aims to reimplement [Vulcan API](https://github.com/kapi2289/vulcan-api) in JavaScript.
