@@ -202,7 +202,7 @@ export class Api{
         if(date === undefined){
             date = new Date();
         }
-        let dateStr = date.getUTCFullYear().toString() + "-" + date.getUTCMonth().toString() + "-" + date.getUTCDate().toString();
+        let dateStr = date.getUTCFullYear().toString() + "-" + (date.getUTCMonth()+1).toString() + "-" + date.getUTCDate().toString();
         let data = {"DataPoczatkowa": dateStr, "DataKoncowa": dateStr};
         try {
             const jsonData = await this.post("Uczen/PlanLekcjiZeZmianami", data);
@@ -243,7 +243,7 @@ export class Api{
         if(date === undefined){
             date = new Date();
         }
-        let dateStr = date.getUTCFullYear().toString() + "-" + date.getUTCMonth().toString() + "-" + date.getUTCDate().toString();
+        let dateStr = date.getUTCFullYear().toString() + "-" + (date.getUTCMonth()+1).toString() + "-" + date.getUTCDate().toString();
         let data = {"DataPoczatkowa": dateStr, "DataKoncowa": dateStr};
         try {
             const jsonData = await this.post("Uczen/Sprawdziany", data);
@@ -281,7 +281,7 @@ export class Api{
         if(date === undefined){
             date = new Date();
         }
-        let dateStr = date.getUTCFullYear().toString() + "-" + date.getUTCMonth().toString() + "-" + date.getUTCDate().toString();
+        let dateStr = date.getUTCFullYear().toString() + "-" + (date.getUTCMonth()+1).toString() + "-" + date.getUTCDate().toString();
         let data = {"DataPoczatkowa": dateStr, "DataKoncowa": dateStr};
         try {
             const jsonData = await this.post("Uczen/ZadaniaDomowe", data);
@@ -315,8 +315,8 @@ export class Api{
         if(dateTo === undefined){
             dateTo = new Date(this.student["OkresDataDoTekst"]);
         }
-        let dateFromStr = dateFrom.getUTCFullYear().toString() + "-" + dateFrom.getUTCMonth().toString() + "-" + dateFrom.getUTCDate().toString();
-        let dateToStr = dateTo.getUTCFullYear().toString() + "-" + dateTo.getUTCMonth().toString() + "-" + dateTo.getUTCDate().toString();
+        let dateFromStr = dateFrom.getUTCFullYear().toString() + "-" + (dateFrom.getUTCMonth()+1).toString() + "-" + dateFrom.getUTCDate().toString();
+        let dateToStr = dateTo.getUTCFullYear().toString() + "-" + (dateTo.getUTCMonth()+1).toString() + "-" + dateTo.getUTCDate().toString();
         let data = {"DataPoczatkowa": dateFromStr, "DataKoncowa": dateToStr};
         try {
             const jsonData = await this.post("Uczen/WiadomosciOdebrane", data);
