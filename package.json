@@ -1,6 +1,6 @@
 {
   "name": "vulcan-api-js",
-  "version": "1.0.4",
+  "version": "1.1.0",
   "description": "Unofficial API for UONET+ e-register from Vulcan.",
   "main": "lib/index.js",
   "scripts": {
