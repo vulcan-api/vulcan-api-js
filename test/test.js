@@ -2,7 +2,8 @@ const Vulcan = require('../lib');
 const chai = require('chai');
 const expect = chai.expect;
 chai.use(require('chai-as-promised'));
-require('dotenv').config();
+const path = require('path')
+require('dotenv').config({ path: path.join(__dirname, "../.env") });
 const CERT = JSON.parse(process.env.CERT);
 if (CERT === undefined) {
     throw Error("Couldn't find cert!");

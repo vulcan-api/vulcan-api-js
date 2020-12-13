@@ -7,10 +7,10 @@ import {
     APP_NAME
 } from './utils.js';
 import axios from 'axios';
-export const getCertificate = async (inputToken, inputSymbol, inputPin) => {
-        const token = inputToken.toString().toUpperCase();
-        const symbol = inputSymbol.toString().toLowerCase();
-        const pin = inputPin.toString();
+export const getCertificate = async (inputToken: string, inputSymbol: string, inputPin: string) => {
+        const token = inputToken.toUpperCase();
+        const symbol = inputSymbol.toLowerCase();
+        const pin = inputPin;
         const firebaseToken = await getFirebaseToken();
         const data = {
             "PIN": pin,

@@ -1,3 +1,13 @@
+import { vulcanDictionaries } from './vulcan_interfaces/vulcanDictionaries';
+import { message } from './interfaces/message';
+import { vulcanMessageRecipient } from './vulcan_interfaces/vulcanMessageRecipient';
+import { vulcanHomework } from './vulcan_interfaces/vulcanHomework';
+import { vulcanExam } from './vulcan_interfaces/vulcanExam';
+import { vulcanLesson } from './vulcan_interfaces/vulcanLesson';
+import { vulcanGrade } from './vulcan_interfaces/vulcanGrade';
+import { grade } from './interfaces/grade';
+import { student } from './vulcan_interfaces/vulcanStudent';
+import { cert } from './vulcan_interfaces/cert';
 import {
     APP_VERSION,
     APP_NAME,
@@ -6,17 +16,26 @@ import {
     uuid
 } from './utils.js';
 import axios from 'axios';
+import { lesson } from './interfaces/lesson';
+import { exam } from './interfaces/exam';
+import { homework } from './interfaces/homework';
+import { vulcanMessage } from './vulcan_interfaces/vulcanMessage';
 
 export class Api{
-    constructor(cert){
+    private cert: cert;
+    private baseUrl: string;
+    private fullUrl: undefined | string;
+    private student: undefined | student;
+    private dictionaries: undefined | vulcanDictionaries; // Any should be replaced
+    constructor(cert: cert){
         this.cert = cert;
         this.baseUrl = cert["AdresBazowyRestApi"] + "mobile-api/Uczen.v3.";
         this.fullUrl = undefined;
         this.student = undefined;
         this.dictionaries = undefined;
     }
-    payload(json = undefined){
-        let payload = {
+    payload(json: any = undefined){
+        let payload: any = {
             "RemoteMobileTimeKey": now() + 1,
             "TimeKey": now(),
             "RequestId": uuid(),
@@ -37,7 +56,7 @@ export class Api{
         }
 
     }
-    async headers(json){
+    async headers(json: object){
         return {
             "User-Agent": "MobileUserAgent",
             RequestCertificateKey: this.cert["CertyfikatKlucz"],
@@ -46,7 +65,7 @@ export class Api{
             'Content-Type': 'application/json; charset=UTF-8',
         }
     }
-    async request(method, endpoint, json = undefined){
+    async request(method: "get" | "post", endpoint: string, json: any = undefined){
         let reqPayload = this.payload(json);
         let reqHeaders = await this.headers(reqPayload);
         const url = endpoint.startsWith("http") ? endpoint : this.fullUrl + endpoint;
@@ -58,10 +77,10 @@ export class Api{
         });
         return r.data;
     }
-    get(endpoint, json = undefined){
+    get(endpoint: string, json: any = undefined){
         return this.request("get", endpoint, json);
     }
-    post(endpoint, json = undefined){
+    post(endpoint: string, json: any = undefined){
         return this.request("post", endpoint, json);
     }
 
@@ -70,8 +89,8 @@ export class Api{
     async getStudents() {
         try {
             const jsonData = await this.post(this.baseUrl + "UczenStart/ListaUczniow");
-            let studentsArrayToReturn = [];
-            jsonData.Data.forEach(student => {
+            let studentsArrayToReturn: Array<student> = [];
+            jsonData.Data.forEach((student: student) => {
                 studentsArrayToReturn.push(student);
             });
             return studentsArrayToReturn;
@@ -80,7 +99,7 @@ export class Api{
         }
     }
 
-    async setStudent(student){
+    async setStudent(student: student){
         this.student = student;
         this.fullUrl = this.cert["AdresBazowyRestApi"] + student["JednostkaSprawozdawczaSymbol"] + "/mobile-api/Uczen.v3.";
         try {
@@ -95,9 +114,10 @@ export class Api{
 
     // Dictionaries
 
-    getLessonTimeFromDict(lessonTimeId){
+    getLessonTimeFromDict(lessonTimeId: number) {
+        if (!this.dictionaries) {throw Error("You must set the student first!")}
         let objToReturn = null;
-        this.dictionaries["PoryLekcji"].map(item => {
+        this.dictionaries["PoryLekcji"].map((item: any) => {
             if (item.Id === lessonTimeId){
                 objToReturn = {
                     "id": item["Id"],
@@ -110,9 +130,10 @@ export class Api{
         return objToReturn;
     }
 
-    getTeacherFromDict(teacherId){
+    getTeacherFromDict(teacherId: number) {
+        if (!this.dictionaries) {throw Error("You must set the student first!")}
         let objToReturn = null;
-        this.dictionaries["Pracownicy"].map(item => {
+        this.dictionaries["Pracownicy"].map((item: any) => {
             if (item.Id === teacherId){
                 objToReturn = {
                     "id": item["Id"],
@@ -126,9 +147,10 @@ export class Api{
         return objToReturn;
     }
 
-    getTeacherByLoginIdFromDict(teacherLoginId){
+    getTeacherByLoginIdFromDict(teacherLoginId: number) {
+        if (!this.dictionaries) {throw Error("You must set the student first!")}
         let objToReturn = null;
-        this.dictionaries["Pracownicy"].map(item => {
+        this.dictionaries["Pracownicy"].map((item: any)=> {
             if (item.LoginId === teacherLoginId){
                 objToReturn = {
                     "id": item["Id"],
@@ -142,9 +164,10 @@ export class Api{
         return objToReturn;
     }
 
-    getSubjectFromDict(subjectId){
+    getSubjectFromDict(subjectId: number) {
+        if (!this.dictionaries) {throw Error("You must set the student first!")}
         let objToReturn = null;
-        this.dictionaries["Przedmioty"].map(item => {
+        this.dictionaries["Przedmioty"].map((item: any) => {
             if (item.Id === subjectId){
                 objToReturn = {
                     "id": item["Id"],
@@ -157,9 +180,10 @@ export class Api{
         return objToReturn;
     }
 
-    getGradeCategoryFromDict(gradeCategoryId){
+    getGradeCategoryFromDict(gradeCategoryId: number) {
+        if (!this.dictionaries) {throw Error("You must set the student first!")}
         let objToReturn = null;
-        this.dictionaries["KategorieOcen"].map(item => {
+        this.dictionaries["KategorieOcen"].map((item: any) => {
             if (item.Id === gradeCategoryId){
                 objToReturn = {
                     "id": item["Id"],
@@ -175,9 +199,8 @@ export class Api{
     async getGrades(){
         try {
             const jsonData = await this.post("Uczen/Oceny");
-            let gradesToReturn = [];
-            jsonData.Data.map(item => {
-                gradesToReturn.push({
+            let gradesToReturn: Array<grade> = jsonData.Data.map((item: vulcanGrade) => {
+                return{
                     "id": item["Id"],
                     "content": item["Wpis"],
                     "weight": item["WagaOceny"],
@@ -188,7 +211,7 @@ export class Api{
                     "teacher": this.getTeacherFromDict(item["IdPracownikD"]),
                     "subject": this.getSubjectFromDict(item["IdPrzedmiot"]),
                     "category": this.getGradeCategoryFromDict(item["IdKategoria"])
-                });
+                };
             });
             return gradesToReturn;
         } catch (e) {
@@ -198,7 +221,7 @@ export class Api{
 
     // Lessons
 
-    async getLessons(date=undefined){
+    async getLessons(date: undefined | Date = undefined){
         if(date === undefined){
             date = new Date();
         }
@@ -207,7 +230,7 @@ export class Api{
         try {
             const jsonData = await this.post("Uczen/PlanLekcjiZeZmianami", data);
 
-            let lessons = jsonData.Data.sort((a, b) => {
+            let lessons = jsonData.Data.sort((a: vulcanLesson, b: vulcanLesson) => {
                 if (a["NumerLekcji"] < b["NumerLekcji"]){
                     return -1;
                 }
@@ -217,10 +240,8 @@ export class Api{
                 return 0;
             });
 
-            let lessonsToReturn = [];
-
-            lessons.map(item => {
-                lessonsToReturn.push({
+            let lessonsToReturn: Array<lesson> = lessons.map((item: vulcanLesson) => {
+                return {
                     "number": item["NumerLekcji"],
                     "room": item["Sala"],
                     "group": item["PodzialSkrot"],
@@ -228,7 +249,7 @@ export class Api{
                     "time": this.getLessonTimeFromDict(item["IdPoraLekcji"]),
                     "teacher": this.getTeacherFromDict(item["IdPracownik"]),
                     "subject": this.getSubjectFromDict(item["IdPrzedmiot"])
-                });
+                };
             });
 
             return lessonsToReturn;
@@ -239,7 +260,7 @@ export class Api{
 
     // Exams
 
-    async getExams(date=undefined){
+    async getExams(date: undefined | Date = undefined){
         if(date === undefined){
             date = new Date();
         }
@@ -247,26 +268,22 @@ export class Api{
         let data = {"DataPoczatkowa": dateStr, "DataKoncowa": dateStr};
         try {
             const jsonData = await this.post("Uczen/Sprawdziany", data);
-
-            // TODO implement sort / understand why is it even needed in the first place ;D
-
-            let examsToReturn = [];
-
-            const examType = { // This could be replaced with enum in TS
-                1: "EXAM",
-                2: "SHORT_TEST",
-                3: "CLASS_TEST"
-            }
-
-            jsonData.Data.map(item => {
-                examsToReturn.push({
+            
+            const examType = [
+                "EXAM",
+                "SHORT_TEST",
+                "CLASS_TEST"
+            ];
+            
+            let examsToReturn: Array<exam> = jsonData.Data.map((item: vulcanExam) => {
+                return {
                     "id": item["Id"],
-                    "type": examType[item["RodzajNumer"]],
+                    "type": examType[item["RodzajNumer"] - 1],
                     "description": item["Opis"],
                     "date": item["DataTekst"],
                     "teacher": this.getTeacherFromDict(item["IdPracownik"]),
                     "subject": this.getSubjectFromDict(item["IdPrzedmiot"])
-                });
+                };
             });
 
             return examsToReturn;
@@ -277,7 +294,7 @@ export class Api{
 
     // Homework
 
-    async getHomework(date=undefined){   // WARNING! I don't have a way to test this!
+    async getHomework(date: undefined | Date = undefined){   // WARNING! I don't have a way to test this!
         if(date === undefined){
             date = new Date();
         }
@@ -286,18 +303,14 @@ export class Api{
         try {
             const jsonData = await this.post("Uczen/ZadaniaDomowe", data);
 
-            // TODO implement sort / understand why is it even needed in the first place ;D
-
-            let homeworkToReturn = [];
-
-            jsonData.Data.map(item => {
-                homeworkToReturn.push({
+            let homeworkToReturn: Array<homework> = jsonData.Data.map((item: vulcanHomework) => {
+                return {
                     "id": item["Id"],
                     "description": item["Opis"],
                     "date": item["DataTekst"],
                     "teacher": this.getTeacherFromDict(item["IdPracownik"]),
                     "subject": this.getSubjectFromDict(item["IdPrzedmiot"])
-                });
+                };
             });
 
             return homeworkToReturn;
@@ -308,7 +321,8 @@ export class Api{
 
     // Messages
 
-    async getMessages(dateFrom=undefined, dateTo=undefined){
+    async getMessages(dateFrom: undefined | Date = undefined, dateTo: undefined | Date = undefined) {
+        if (!this.student) { throw Error("You must set the student first!") }
         if(dateFrom === undefined){
             dateFrom = new Date(this.student["OkresDataOdTekst"]);
         }
@@ -321,17 +335,14 @@ export class Api{
         try {
             const jsonData = await this.post("Uczen/WiadomosciOdebrane", data);
 
-            let messagesToReturn = [];
-
-            jsonData.Data.map(item => {
-                let messageRecipients = [];
-                item["Adresaci"].map(innerItem => {
-                    messageRecipients.push({
+            let messagesToReturn: Array<message> = jsonData.Data.map((item: vulcanMessage) => {
+                let messageRecipients = item["Adresaci"] !== null ? item["Adresaci"].map((innerItem: vulcanMessageRecipient) => {
+                    return {
                         "loginId": innerItem["LoginId"],
                         "name": innerItem["Nazwa"]
-                    });
-                });
-                messagesToReturn.push({
+                    };
+                }) : null;
+                return {
                     "id": item["WiadomoscId"],
                     "senderId": item["NadawcaId"],
                     "recipients": messageRecipients,
@@ -342,7 +353,7 @@ export class Api{
                     "readDate": item["DataPrzeczytania"],
                     "readTime": item["GodzinaPrzeczytania"],
                     "sender": this.getTeacherByLoginIdFromDict(item["NadawcaId"])
-                });
+                };
             });
 
             return messagesToReturn;

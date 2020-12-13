@@ -6,17 +6,17 @@
 
 
 // https://stackoverflow.com/a/37407739
+import { RsaPrivateKey } from 'crypto';
 import forge from 'node-forge';
 import Crypto from 'node-webcrypto-ossl';
 const crypto = new Crypto();
-    export const signContent = function (password, certificate, content) {
+    export const signContent = function (password: string, certificate: string, content: string) {
         const p12Der = forge.util.decode64(certificate);
         const p12Asn1 = forge.asn1.fromDer(p12Der);
         const pkcs12 = forge.pkcs12.pkcs12FromAsn1(p12Asn1, false, password);
-
         return importCryptoKeyPkcs8(loadPrivateKey(pkcs12), true).then(function (cryptoKey) {
             return crypto.subtle.sign(
-                {name: "RSASSA-PKCS1-v1_5"},
+                "RSASSA-PKCS1-v1_5",
                 cryptoKey,
                 stringToArrayBuffer(content)
             ).then(function (signature) {
@@ -25,7 +25,7 @@ const crypto = new Crypto();
         });
     };
 
-function arrayBufferToString(buffer) {
+function arrayBufferToString(buffer: ArrayBuffer) {
     let binary = '';
     const bytes = new Uint8Array(buffer);
     const len = bytes.byteLength;
@@ -35,14 +35,14 @@ function arrayBufferToString(buffer) {
     return binary;
 }
 
-function _privateKeyToPkcs8(privateKey) {
+function _privateKeyToPkcs8(privateKey: forge.pki.PrivateKey) {
     const rsaPrivateKey = forge.pki.privateKeyToAsn1(privateKey);
     const privateKeyInfo = forge.pki.wrapRsaPrivateKey(rsaPrivateKey);
     const privateKeyInfoDer = forge.asn1.toDer(privateKeyInfo).getBytes();
     return stringToArrayBuffer(privateKeyInfoDer);
 }
 
-function stringToArrayBuffer(data) {
+function stringToArrayBuffer(data: string) {
     const arrBuff = new ArrayBuffer(data.length);
     const writer = new Uint8Array(arrBuff);
     for (let i = 0, len = data.length; i < len; i++) {
@@ -52,7 +52,7 @@ function stringToArrayBuffer(data) {
     return arrBuff;
 }
 
-function loadPrivateKey(pkcs12) {
+function loadPrivateKey(pkcs12: forge.pkcs12.Pkcs12Pfx) : Uint8Array | forge.pki.PrivateKey | Buffer {
     // load keypair and cert chain from safe content(s)
     for (let sci = 0; sci < pkcs12.safeContents.length; ++sci) {
         const safeContents = pkcs12.safeContents[sci];
@@ -63,18 +63,21 @@ function loadPrivateKey(pkcs12) {
             // this bag has a private key
             if (safeBag.type === forge.pki.oids.keyBag) {
                 //Found plain private key
+                if (!safeBag.key) { throw Error('Failed loading the private key!'); }
                 return safeBag.key;
             } else if (safeBag.type === forge.pki.oids.pkcs8ShroudedKeyBag) {
                 // found encrypted private key
+                if (!safeBag.key) { throw Error('Failed loading the private key!'); }
                 return safeBag.key;
             } else if (safeBag.type === forge.pki.oids.certBag) {
                 // this bag has a certificate...
             }
         }
     }
+    throw Error('Failed loading the private key!');
 }
 
-function importCryptoKeyPkcs8(privateKey, extractable) {
+function importCryptoKeyPkcs8(privateKey: forge.pki.PrivateKey, extractable: boolean) {
     const privateKeyInfoDerBuff = _privateKeyToPkcs8(privateKey);
 
     //Import the webcrypto key

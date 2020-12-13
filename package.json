@@ -5,7 +5,9 @@
   "main": "lib/index.js",
   "scripts": {
     "prepublish": "babel src --out-dir lib",
-    "test": "mocha --reporter spec"
+    "test": "mocha --reporter spec",
+    "lint": "eslint --fix src",
+    "type-check": "tsc --noEmit"
   },
   "repository": "https://github.com/Capure/vulcan-api-js.git",
   "author": "Capure",
@@ -13,19 +15,30 @@
   "dependencies": {
     "axios": "^0.19.2",
     "node-forge": "^0.9.0",
+    "node-webcrypto-ossl": "^1.0.42",
     "querystring": "^0.2.0",
     "regenerator-runtime": "^0.13.7",
     "uuid": "^8.3.0"
   },
   "devDependencies": {
-    "@babel/cli": "^7.10.5",
-    "@babel/core": "^7.11.4",
-    "@babel/plugin-proposal-object-rest-spread": "^7.11.0",
-    "@babel/preset-env": "^7.11.0",
-    "mocha": "^6.0.2",
+    "@babel/cli": "^7.12.8",
+    "@babel/core": "^7.12.9",
+    "@babel/plugin-proposal-class-properties": "^7.12.1",
+    "@babel/preset-env": "^7.12.7",
+    "@babel/preset-typescript": "^7.12.7",
+    "@types/node": "^14.14.10",
+    "@types/node-forge": "^0.9.5",
+    "@types/regenerator-runtime": "^0.13.0",
+    "@types/uuid": "^8.3.0",
+    "@typescript-eslint/eslint-plugin": "^4.9.0",
+    "@typescript-eslint/parser": "^4.9.0",
     "chai": "^4.2.0",
     "chai-as-promised": "^7.1.1",
-    "dotenv": "^8.2.0"
+    "dotenv": "^8.2.0",
+    "eslint": "^7.14.0",
+    "eslint-plugin-import": "^2.22.1",
+    "mocha": "^6.0.2",
+    "typescript": "^4.1.2"
   },
   "optionalDependencies": {
     "node-webcrypto-ossl": "^1.0.42"
