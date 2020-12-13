@@ -1,3 +1,4 @@
+import { employee } from './employee';
 import { vulcanMessageRecipient } from "../vulcan_interfaces/vulcanMessageRecipient";
 
 export interface message {
@@ -10,5 +11,5 @@ export interface message {
     "sentTime": string,
     "readDate": string,
     "readTime": string,
-    "sender": any
+    "sender": employee
 }

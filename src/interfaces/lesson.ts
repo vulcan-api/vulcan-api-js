@@ -1,9 +1,13 @@
+import { subject } from './subject';
+import { employee } from './employee';
+import { lessonTime } from './lessonTime';
+
 export interface lesson {
     "number": number,
     "room": string,
     "group": string | null,
     "date": string,
-    "time": any,
-    "teacher": any,
-    "subject": any
+    "time": lessonTime,
+    "teacher": employee,
+    "subject": subject
 }

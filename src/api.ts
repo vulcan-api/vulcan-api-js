@@ -1,3 +1,7 @@
+import { gradeCategory } from './interfaces/gradeCategory';
+import { vulcanGradeCategory } from './vulcan_interfaces/vulcanGradeCategory';
+import { vulcanSubject } from './vulcan_interfaces/vulcanSubject';
+import { vulcanLessonTime } from './vulcan_interfaces/vulcanLessonTime';
 import { vulcanDictionaries } from './vulcan_interfaces/vulcanDictionaries';
 import { message } from './interfaces/message';
 import { vulcanMessageRecipient } from './vulcan_interfaces/vulcanMessageRecipient';
@@ -6,7 +10,7 @@ import { vulcanExam } from './vulcan_interfaces/vulcanExam';
 import { vulcanLesson } from './vulcan_interfaces/vulcanLesson';
 import { vulcanGrade } from './vulcan_interfaces/vulcanGrade';
 import { grade } from './interfaces/grade';
-import { student } from './vulcan_interfaces/vulcanStudent';
+import { vulcanStudent } from './vulcan_interfaces/vulcanStudent';
 import { cert } from './vulcan_interfaces/cert';
 import {
     APP_VERSION,
@@ -20,12 +24,16 @@ import { lesson } from './interfaces/lesson';
 import { exam } from './interfaces/exam';
 import { homework } from './interfaces/homework';
 import { vulcanMessage } from './vulcan_interfaces/vulcanMessage';
+import { lessonTime } from './interfaces/lessonTime';
+import { vulcanEmployee } from './vulcan_interfaces/vulcanEmployee';
+import { employee } from './interfaces/employee';
+import { subject } from './interfaces/subject';
 
 export class Api{
     private cert: cert;
     private baseUrl: string;
     private fullUrl: undefined | string;
-    private student: undefined | student;
+    private student: undefined | vulcanStudent;
     private dictionaries: undefined | vulcanDictionaries; // Any should be replaced
     constructor(cert: cert){
         this.cert = cert;
@@ -89,8 +97,8 @@ export class Api{
     async getStudents() {
         try {
             const jsonData = await this.post(this.baseUrl + "UczenStart/ListaUczniow");
-            let studentsArrayToReturn: Array<student> = [];
-            jsonData.Data.forEach((student: student) => {
+            let studentsArrayToReturn: Array<vulcanStudent> = [];
+            jsonData.Data.forEach((student: vulcanStudent) => {
                 studentsArrayToReturn.push(student);
             });
             return studentsArrayToReturn;
@@ -99,7 +107,7 @@ export class Api{
         }
     }
 
-    async setStudent(student: student){
+    async setStudent(student: vulcanStudent){
         this.student = student;
         this.fullUrl = this.cert["AdresBazowyRestApi"] + student["JednostkaSprawozdawczaSymbol"] + "/mobile-api/Uczen.v3.";
         try {
@@ -116,8 +124,8 @@ export class Api{
 
     getLessonTimeFromDict(lessonTimeId: number) {
         if (!this.dictionaries) {throw Error("You must set the student first!")}
-        let objToReturn = null;
-        this.dictionaries["PoryLekcji"].map((item: any) => {
+        let objToReturn: lessonTime | null = null;
+        this.dictionaries["PoryLekcji"].map((item: vulcanLessonTime) => {
             if (item.Id === lessonTimeId){
                 objToReturn = {
                     "id": item["Id"],
@@ -132,8 +140,8 @@ export class Api{
 
     getTeacherFromDict(teacherId: number) {
         if (!this.dictionaries) {throw Error("You must set the student first!")}
-        let objToReturn = null;
-        this.dictionaries["Pracownicy"].map((item: any) => {
+        let objToReturn: employee | null = null;
+        this.dictionaries["Pracownicy"].map((item: vulcanEmployee) => {
             if (item.Id === teacherId){
                 objToReturn = {
                     "id": item["Id"],
@@ -149,8 +157,8 @@ export class Api{
 
     getTeacherByLoginIdFromDict(teacherLoginId: number) {
         if (!this.dictionaries) {throw Error("You must set the student first!")}
-        let objToReturn = null;
-        this.dictionaries["Pracownicy"].map((item: any)=> {
+        let objToReturn: employee | null = null;
+        this.dictionaries["Pracownicy"].map((item: vulcanEmployee)=> {
             if (item.LoginId === teacherLoginId){
                 objToReturn = {
                     "id": item["Id"],
@@ -166,8 +174,8 @@ export class Api{
 
     getSubjectFromDict(subjectId: number) {
         if (!this.dictionaries) {throw Error("You must set the student first!")}
-        let objToReturn = null;
-        this.dictionaries["Przedmioty"].map((item: any) => {
+        let objToReturn: subject | null = null;
+        this.dictionaries["Przedmioty"].map((item: vulcanSubject) => {
             if (item.Id === subjectId){
                 objToReturn = {
                     "id": item["Id"],
@@ -182,8 +190,8 @@ export class Api{
 
     getGradeCategoryFromDict(gradeCategoryId: number) {
         if (!this.dictionaries) {throw Error("You must set the student first!")}
-        let objToReturn = null;
-        this.dictionaries["KategorieOcen"].map((item: any) => {
+        let objToReturn: gradeCategory | null = null;
+        this.dictionaries["KategorieOcen"].map((item: vulcanGradeCategory) => {
             if (item.Id === gradeCategoryId){
                 objToReturn = {
                     "id": item["Id"],

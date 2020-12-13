@@ -1,4 +1,4 @@
-export interface student {
+export interface vulcanStudent {
     "IdOkresKlasyfikacyjny": number,
     "OkresPoziom": number,
     "OkresNumer": number,

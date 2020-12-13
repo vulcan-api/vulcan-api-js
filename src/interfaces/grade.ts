@@ -1,3 +1,7 @@
+import { employee } from './employee';
+import { subject } from './subject';
+import { gradeCategory } from './gradeCategory';
+
 export interface grade {
     "id": number,
     "content": string,
@@ -6,7 +10,7 @@ export interface grade {
     "date": string,
     "lastModificationDate": string,
     "value": number,
-    "teacher": any,
-    "subject": any,
-    "category": any
+    "teacher": employee,
+    "subject": subject,
+    "category": gradeCategory
 }
