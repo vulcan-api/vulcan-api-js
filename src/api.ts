@@ -254,6 +254,9 @@ export class Api{
                     "room": item["Sala"],
                     "group": item["PodzialSkrot"],
                     "date": item["DzienTekst"],
+                    "changeAnnotation": item["AdnotacjaOZmianie"],
+                    "lineThrough": item["PrzekreslonaNazwa"],
+                    "bold": item["PogrubionaNazwa"],
                     "time": this.getLessonTimeFromDict(item["IdPoraLekcji"]),
                     "teacher": this.getTeacherFromDict(item["IdPracownik"]),
                     "subject": this.getSubjectFromDict(item["IdPrzedmiot"])

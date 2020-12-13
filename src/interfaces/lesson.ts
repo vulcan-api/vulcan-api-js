@@ -8,6 +8,9 @@ export interface lesson {
     "group": string | null,
     "date": string,
     "time": lessonTime,
+    "changeAnnotation": string,
+    "lineThrough": boolean,
+    "bold": boolean,
     "teacher": employee,
     "subject": subject
 }
