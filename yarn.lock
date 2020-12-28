@@ -974,6 +974,11 @@
   resolved "https://registry.yarnpkg.com/@types/uuid/-/uuid-8.3.0.tgz"
   integrity sha512-eQ9qFW/fhfGJF8WKHGEHZEyVWfZxrT+6CLIJGBcZPfxUh/+BnEj+UCGYMlr9qZuX/2AltsvwrGqp0LhEW8D0zQ==
 
+"@wulkanowy/uonet-request-signer-node-hebe@^0.1.2":
+  version "0.1.2"
+  resolved "https://registry.yarnpkg.com/@wulkanowy/uonet-request-signer-node-hebe/-/uonet-request-signer-node-hebe-0.1.2.tgz#f07db46ab6dd03163665dde6bfe23ba81ac7a075"
+  integrity sha512-QrnJTek3JvQ49qqY8shkMY421/IRgT1GcP2PzML95SaTAcWXuvdiCbE1xdefKPygDKZkpxvGCogeh9fyS0C9SA==
+
 ansi-colors@3.2.3:
   version "3.2.3"
   resolved "https://registry.yarnpkg.com/ansi-colors/-/ansi-colors-3.2.3.tgz"

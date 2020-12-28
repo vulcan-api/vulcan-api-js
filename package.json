@@ -12,6 +12,7 @@
   "author": "Capure",
   "license": "MIT",
   "dependencies": {
+    "@wulkanowy/uonet-request-signer-node-hebe": "^0.1.2",
     "axios": "^0.19.2",
     "node-forge": ">=0.10.0",
     "node-webcrypto-ossl": "^1.0.42",
