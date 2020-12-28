@@ -105,3 +105,6 @@ dist
 
 # Babel output
 lib/
+
+# File for testing in development
+dev.js
