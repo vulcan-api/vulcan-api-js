@@ -1,15 +1,24 @@
-import { defaultDeviceModel } from "./utils";
+import { defaultDeviceModel, getFirebaseToken, generateKeyPair } from "./utils";
+import forge from 'node-forge';
 
 export class Keystore {
-    public certificate: string;
-    public fingerprint: string;
-    public privateKey: string;
-    public firebaseToken: string;
-    public deviceModel: string;
+    public certificate: string | undefined;
+    public fingerprint: string | undefined;
+    public privateKey: forge.pki.PrivateKey | undefined;
+    public firebaseToken: string | undefined;
+    public deviceModel: string | undefined;
 
-    constructor(firebaseToken: string | undefined = undefined,
+    public init = async (firebaseToken: string | undefined = undefined,
         deviceModel: string = defaultDeviceModel()
-    ) {
-        // TODO: implement this    
+    ) => {
+        if (!firebaseToken) {
+            firebaseToken = await getFirebaseToken();
+        }
+        const { privateKey, certificate, fingerprint } = generateKeyPair();
+        this.certificate = certificate;
+        this.fingerprint = fingerprint;
+        this.privateKey = privateKey;
+        this.firebaseToken = firebaseToken;
+        this.deviceModel = deviceModel;
     }
 }
