@@ -4,7 +4,7 @@
   "description": "Unofficial API for UONET+ e-register from Vulcan.",
   "main": "lib/index.js",
   "scripts": {
-    "prepublish": "babel src --out-dir lib",
+    "prepublish": "babel src --extensions '.ts' --out-dir lib",
     "test": "mocha --reporter spec",
     "type-check": "tsc --noEmit"
   },
@@ -14,6 +14,8 @@
   "dependencies": {
     "@wulkanowy/uonet-request-signer-node-hebe": "^0.1.2",
     "axios": "^0.19.2",
+    "dateformat": "^4.4.1",
+    "node-fetch": "^2.6.1",
     "node-forge": ">=0.10.0",
     "node-webcrypto-ossl": "^1.0.42",
     "querystring": "^0.2.0",
@@ -26,7 +28,9 @@
     "@babel/plugin-proposal-class-properties": "^7.12.1",
     "@babel/preset-env": "^7.12.7",
     "@babel/preset-typescript": "^7.12.7",
+    "@types/dateformat": "^3.0.1",
     "@types/node": "^14.14.10",
+    "@types/node-fetch": "^2.5.7",
     "@types/node-forge": "^0.9.5",
     "@types/regenerator-runtime": "^0.13.0",
     "@types/uuid": "^8.3.0",

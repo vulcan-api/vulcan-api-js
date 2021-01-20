@@ -1,12 +1,16 @@
-import { v4 as uuidv4 } from 'uuid';
+import { v4 as uuidv4, v5 as uuidv5 } from 'uuid';
 import axios from 'axios';
 import qs from 'querystring';
 import { signContent } from './signer';
-import regeneratorRuntime from "regenerator-runtime"; // for babel
 export const APP_NAME = "VULCAN-Android-ModulUcznia";
 export const APP_VERSION = "18.10.1.433";
 export const now = () => {return Math.floor(Date.now() / 1000)};
-export const uuid = () => {return uuidv4()};
+export const uuid = (seed?: string) => {
+    if (seed) {
+        return uuidv5(seed, "6ba7b814-9dad-11d1-80b4-00c04fd430c8")
+    }
+    return uuidv4()
+};
 export const signature = async (cert: any, data: any) => {return await signContent("CE75EA598C7743AD9B0B7328DED85B06", cert, data)}
 export const getComponents = async () => {
     let r = await axios.get('http://komponenty.vulcan.net.pl/UonetPlusMobile/RoutingRules.txt');

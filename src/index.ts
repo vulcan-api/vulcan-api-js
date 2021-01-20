@@ -1,11 +1,14 @@
-import { student } from './vulcan_interfaces/vulcanStudent';
+import { vulcanStudent } from './vulcan_interfaces/vulcanStudent';
 import { cert } from './vulcan_interfaces/cert';
 import { getCertificate } from "./certificate.js";
 import {Api} from './api.js';
+import {VulcanHebe} from './hebe';
 
 export const register = (token: string, symbol: string, pin: string) => {
     return getCertificate(token, symbol, pin);
 }
+
+export { VulcanHebe };
 
 export class Vulcan{
     private api;
@@ -15,7 +18,7 @@ export class Vulcan{
     getStudents(){
         return this.api.getStudents();
     }
-    async setStudent(student: student){
+    async setStudent(student: vulcanStudent){
         return await this.api.setStudent(student);
     }
     getGrades(){

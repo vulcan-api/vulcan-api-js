@@ -12,6 +12,8 @@ export {uuid,
     getBaseUrl
 };
 
+import dateFormat from "dateformat";
+
 import forge from 'node-forge';
 import crypto from 'crypto';
 
@@ -59,4 +61,19 @@ export const generateKeyPair = () => {
     const fingerprint = getCertificateFingerprint(certificate);
     const privateKey = keys.privateKey;
     return { certificate, fingerprint, privateKey };
+}
+
+export const nowIso = () => {
+    const date = new Date();
+    return dateFormat(date, "yyyy-mm-dd HH:MM:ss");
+}
+
+export const nowGmt = (timestampt?: number) => {
+    if (timestampt) {
+        const date = new Date(timestampt * 1000);
+        return dateFormat(date, "ddd, dd mmm yyyy HH:MM:ss GMT");
+    } else {
+        const date = new Date();
+        return dateFormat(date, "ddd, dd mmm yyyy HH:MM:ss GMT");
+    }
 }
