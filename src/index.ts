@@ -1,4 +1,4 @@
-import { student } from './vulcan_interfaces/vulcanStudent';
+import { vulcanStudent } from './vulcan_interfaces/vulcanStudent';
 import { cert } from './vulcan_interfaces/cert';
 import { getCertificate } from "./certificate.js";
 import {Api} from './api.js';
@@ -15,7 +15,7 @@ export class Vulcan{
     getStudents(){
         return this.api.getStudents();
     }
-    async setStudent(student: student){
+    async setStudent(student: vulcanStudent){
         return await this.api.setStudent(student);
     }
     getGrades(){
