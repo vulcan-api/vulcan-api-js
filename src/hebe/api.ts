@@ -3,16 +3,18 @@ import fetch from 'node-fetch';
 import {getSignatureValues} from '@wulkanowy/uonet-request-signer-node-hebe';
 import { ApiHelper } from "./apiHelper";
 import { APP_NAME, APP_OS, APP_USER_AGENT, APP_VERSION, millis, nowIso, uuid } from "./utils";
+import { Student } from "./interfaces/student";
+import { Account } from "./interfaces/account";
 
 export class Api {
     private keystore: Keystore;
-    private account?: any;
+    public account?: any;
     private restUrl?: any;
-    private student?: any;
-    private period?: any;
-    private helper: any;
+    public student?: any;
+    public period?: any;
+    public helper: ApiHelper;
 
-    constructor(keystore: Keystore, account?: any) {
+    constructor(keystore: Keystore, account?: Account) {
         this.keystore = keystore;
         if (account) {
             this.account = account;
@@ -38,7 +40,6 @@ export class Api {
             throw Error("Keystore is not initialized!");
         }
         const dt = new Date();
-        console.log(this.keystore.privateKey);
         const {digest, canonicalUrl, signature} = getSignatureValues(
             this.keystore.fingerprint,
             this.keystore.privateKey,
@@ -78,7 +79,6 @@ export class Api {
             options["body"] = payload;
         }
         try {
-            console.log(options)
             const rawRes = await fetch(fullUrl, options);
             const jsonRes = await rawRes.json();
             const status = jsonRes['Status'];
@@ -93,10 +93,10 @@ export class Api {
     }
 
     public get = async (url: string, inQuery?: any) => {
-        const query = inQuery ? `&${(() => {
+        const query = inQuery ? `${(() => {
             let queryToReturn = "";
             for (let item in inQuery) {
-                queryToReturn += `&${item}=${encodeURI(inQuery[item])}`;
+                queryToReturn += `&${item}=${encodeURIComponent(inQuery[item])}`;
             }
             return queryToReturn.substr(1);
         })()}` : undefined;
@@ -110,12 +110,9 @@ export class Api {
 
     public post = async (url: string, body: any) => await this.request("POST", url, body);
 
-    public setStudent = (student: any) => {
-        if (!this.account) {
-            throw Error("Load an account first!");
-        }
-        this.restUrl = this.account.restUrl + student.unit.code + "/";
+    public setStudent(student: Student) {
         this.student = student;
-        this.period = student.currentPeriod;
+        this.restUrl = `${this.restUrl}${student.unit.symbol}/`;
+        this.period = student.periods.filter(item => item.current)[0];
     }
 }

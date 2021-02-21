@@ -14,9 +14,7 @@ You will find some basic docs [here](https://github.com/Capure/vulcan-api-js/blo
 
 ## Work in progress
 
-Please note: This project is still in a very early stage!
-
-It might be unstable.
+Please note: Due to the recent deprecation of the API, this library was using, it is currently undergoing major changes and thus might be unusable!
 
 ## License
 
