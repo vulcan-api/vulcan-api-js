@@ -992,6 +992,15 @@
   resolved "https://registry.yarnpkg.com/@wulkanowy/uonet-request-signer-node-hebe/-/uonet-request-signer-node-hebe-0.1.2.tgz#f07db46ab6dd03163665dde6bfe23ba81ac7a075"
   integrity sha512-QrnJTek3JvQ49qqY8shkMY421/IRgT1GcP2PzML95SaTAcWXuvdiCbE1xdefKPygDKZkpxvGCogeh9fyS0C9SA==
 
+akeypair@^0.2.4:
+  version "0.2.4"
+  resolved "https://registry.yarnpkg.com/akeypair/-/akeypair-0.2.4.tgz#0782a0fb68adcb2f5d0ec2ed3c99259d20d479c9"
+  integrity sha1-B4Kg+2ityy9dDsLtPJklnSDUeck=
+  dependencies:
+    node-forge "~0.6.12"
+  optionalDependencies:
+    ursa "~0.8.1"
+
 ansi-colors@3.2.3:
   version "3.2.3"
   resolved "https://registry.yarnpkg.com/ansi-colors/-/ansi-colors-3.2.3.tgz"
@@ -1123,6 +1132,13 @@ binary-extensions@^2.0.0:
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/binary-extensions/-/binary-extensions-2.1.0.tgz"
   integrity sha512-1Yj8h9Q+QDF5FzhMs/c9+6UntbD5MkRfRwac8DoEm9ZfUBZ7tZ55YcGVAzEe4bXsdQHEk+s9S5wsOKVdZrw0tQ==
+
+bindings@^1.2.1:
+  version "1.5.0"
+  resolved "https://registry.yarnpkg.com/bindings/-/bindings-1.5.0.tgz#10353c9e945334bc0511a6d90b38fbc7c9c504df"
+  integrity sha512-p2q/t/mhvuOj/UeLlV6566GD/guowlr0hHxClI0W9m7MWYkL1F0hLo+0Aexs9HSPCtR1SXQ0TD3MMKrXZajbiQ==
+  dependencies:
+    file-uri-to-path "1.0.0"
 
 brace-expansion@^1.1.7:
   version "1.1.11"
@@ -1526,6 +1542,11 @@ extglob@^2.0.4:
     regex-not "^1.0.0"
     snapdragon "^0.8.1"
     to-regex "^3.0.1"
+
+file-uri-to-path@1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/file-uri-to-path/-/file-uri-to-path-1.0.0.tgz#553a7b8446ff6f684359c445f1e37a05dacc33dd"
+  integrity sha512-0Zt+s3L7Vf1biwWZ29aARiVYLx7iMGnEUl9x33fbB/j3jR81u/O2LbqK+Bm1CDSNDKVtJ/YjwY7TUd5SkeLQLw==
 
 fill-range@^4.0.0:
   version "4.0.0"
@@ -2125,6 +2146,11 @@ ms@^2.1.1:
   resolved "https://registry.yarnpkg.com/ms/-/ms-2.1.2.tgz"
   integrity sha512-sGkPx+VjMtmA6MX27oA4FBFELFCZZ4S4XqeGOXCv68tT+jb3vk/RyaKWP0PTKyWtmLSM0b+adUTEvbs1PEaH2w==
 
+nan@^1.7.0:
+  version "1.9.0"
+  resolved "https://registry.yarnpkg.com/nan/-/nan-1.9.0.tgz#1a9cd2755609766f5c291e4194fce39fde286515"
+  integrity sha1-GpzSdVYJdm9cKR5BlPzjn94oZRU=
+
 nan@^2.14.0:
   version "2.14.1"
   resolved "https://registry.yarnpkg.com/nan/-/nan-2.14.1.tgz"
@@ -2164,6 +2190,11 @@ node-forge@>=0.10.0:
   version "0.10.0"
   resolved "https://registry.npmjs.org/node-forge/-/node-forge-0.10.0.tgz"
   integrity sha512-PPmu8eEeG9saEUvI97fm4OYxXVB6bFvyNTyiUOBichBpFG8A1Ljw3bY62+5oOjDEMHRnd0Y7HQ+x7uzxOzC6JA==
+
+node-forge@~0.6.12:
+  version "0.6.49"
+  resolved "https://registry.yarnpkg.com/node-forge/-/node-forge-0.6.49.tgz#f1ee95d5d74623938fe19d698aa5a26d54d2f60f"
+  integrity sha1-8e6V1ddGI5OP4Z1piqWibVTS9g8=
 
 node-releases@^1.1.67:
   version "1.1.67"
@@ -2739,6 +2770,14 @@ urix@^0.1.0:
   version "0.1.0"
   resolved "https://registry.yarnpkg.com/urix/-/urix-0.1.0.tgz"
   integrity sha1-2pN/emLiH+wf0Y1Js1wpNQZ6bHI=
+
+ursa@~0.8.1:
+  version "0.8.5"
+  resolved "https://registry.yarnpkg.com/ursa/-/ursa-0.8.5.tgz#cb6beca9808840de0c9e6057153be3b1901431b6"
+  integrity sha1-y2vsqYCIQN4MnmBXFTvjsZAUMbY=
+  dependencies:
+    bindings "^1.2.1"
+    nan "^1.7.0"
 
 use@^3.1.0:
   version "3.1.1"

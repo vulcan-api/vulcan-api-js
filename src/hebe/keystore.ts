@@ -1,5 +1,4 @@
 import { defaultDeviceModel, getFirebaseToken, generateKeyPair } from "./utils";
-import forge from 'node-forge';
 
 export class Keystore {
     public certificate: string | undefined;
@@ -8,22 +7,37 @@ export class Keystore {
     public firebaseToken: string | undefined;
     public deviceModel: string | undefined;
 
-    public init = async (deviceModel: string = defaultDeviceModel(),
-        firebaseToken?: string
-    ) => {
+    public async init (deviceModel: string = defaultDeviceModel(), firebaseToken?: string){
         if (!firebaseToken) {
             firebaseToken = await getFirebaseToken();
         }
-        const { privateKey, certificate, fingerprint } = generateKeyPair();
+        const { privateKey, certificate, fingerprint } = await generateKeyPair();
         this.certificate = certificate;
         this.fingerprint = fingerprint;
-        this.privateKey = (() => {
-            const rsaPrivateKey = forge.pki.privateKeyToAsn1(privateKey);
-            const privateKeyInfo = forge.pki.wrapRsaPrivateKey(rsaPrivateKey);
-            const privateKeyInfoDer = forge.asn1.toDer(privateKeyInfo).getBytes();
-            return privateKeyInfoDer;
-        })();
+        this.privateKey = privateKey;
         this.firebaseToken = firebaseToken;
         this.deviceModel = deviceModel;
+    }
+
+    public load(certificate: string,
+        fingerprint: string,
+        privateKey: string,
+        firebaseToken: string,
+        deviceModel: string) {
+            this.certificate = certificate;
+            this.fingerprint = fingerprint;
+            this.privateKey = privateKey;
+            this.firebaseToken = firebaseToken;
+            this.deviceModel = deviceModel;
+    }
+
+    public dump(){
+        return {
+            certificate: this.certificate,
+            fingerprint: this.fingerprint,
+            privateKey: this.privateKey,
+            firebaseToken: this.firebaseToken,
+            deviceModel: this.deviceModel
+        }
     }
 }

@@ -1,16 +1,4 @@
-// This is imported here
-// so that you can import
-// just a single file instead of two.
-// I'm aware how ridiculous the block below looks ;)
-
-import { uuid,
-    getFirebaseToken,
-    getBaseUrl
-} from '../utils';
-export {uuid,
-    getFirebaseToken,
-    getBaseUrl
-};
+export * from '../utils';
 
 import dateFormat from "dateformat";
 
@@ -26,54 +14,52 @@ export const defaultDeviceModel = () => `Vulcan API (Node ${process.version})`;
 
 export const millis = () => Date.now();
 
-export const generateKeyPair = () => {
-    const getCertificateFingerprint = (certString: string) => {
-        const baseString = certString.match(/-----BEGIN CERTIFICATE-----\s*([\s\S]+?)\s*-----END CERTIFICATE-----/i);
-        if (baseString === null) {throw Error()}
-        const rawCert = Buffer.from(baseString[1], "base64");
-        const sha256sum = crypto.createHash("sha256").update(rawCert).digest("hex");
-        return sha256sum.toUpperCase().replace(/(.{2})(?!$)/g, "$1:");
-    }
-
+export const generateKeyPair = async () => {
+    const addYears = (dt: Date, n: number) => new Date(dt.setFullYear(dt.getFullYear() + n));
 
     const pki = forge.pki;
 
-    const keys = pki.rsa.generateKeyPair(2048);
+    const keys: any = await new Promise((resolve, reject) => {
+        crypto.generateKeyPair('rsa', { modulusLength: 2048 }, (err, publicKey, privateKey) => {
+            if (err) { reject(err) }
+            else {
+                resolve({publicKey, privateKey});
+            }
+        })
+    });
+    const publicKey = keys.publicKey.export({ format: 'pem', type: 'spki' }).toString();
+    const privateKey = keys.privateKey.export({ format: 'pem', type: 'pkcs8' }).toString();
     const cert = pki.createCertificate();
-    cert.publicKey = keys.publicKey;
-    cert.serialNumber = "1";
-    cert.validity.notBefore = new Date(0);
-    cert.validity.notAfter = new Date(20 * 365 * 24 * 60 * 60 * 1000);
+    cert.publicKey = forge.pki.publicKeyFromPem(publicKey);
+    cert.privateKey = forge.pki.privateKeyFromPem(privateKey);
+    cert.serialNumber = '1';
+    cert.validity.notBefore = new Date();
+    cert.validity.notAfter = addYears(new Date(), 20);
     const attrs = [{
-    name: 'commonName',
-    value: 'APP_CERTIFICATE CA Certificate'
-    }, {
-    name: 'countryName',
-    value: 'PL'
-    }, {
-    name: 'organizationName',
-    value: 'Open Source'
-    }];
+        shortName: 'CN',
+        value: 'APP_CERTIFICATE CA Certificate'
+    },
+    ];
     cert.setSubject(attrs);
     cert.setIssuer(attrs);
-    cert.sign(keys.privateKey);
-    const certificate = pki.certificateToPem(cert);;
-    const fingerprint = getCertificateFingerprint(certificate);
-    const privateKey = keys.privateKey;
-    return { certificate, fingerprint, privateKey };
+    cert.sign(cert.privateKey, forge.md.sha256.create());
+    const fingerprint = crypto.createHash('sha1')
+        .update(forge.asn1.toDer(pki.certificateToAsn1(cert)).getBytes().toString(), 'latin1')
+        .digest().toString('hex');
+    const certificate = pki.certificateToPem(cert)
+      .replace('-----BEGIN CERTIFICATE-----', '')
+      .replace('-----END CERTIFICATE-----', '')
+      .replace(/\r?\n|\r/g, '')
+      .trim();
+    const privateKeyToReturn = privateKey
+      .replace('-----BEGIN PRIVATE KEY-----', '')
+      .replace('-----END PRIVATE KEY-----', '')
+      .replace(/\r?\n|\r/g, '')
+      .trim();
+    return { certificate, fingerprint, privateKey: privateKeyToReturn };
 }
 
 export const nowIso = () => {
     const date = new Date();
     return dateFormat(date, "yyyy-mm-dd HH:MM:ss");
-}
-
-export const nowGmt = (timestampt?: number) => {
-    if (timestampt) {
-        const date = new Date(timestampt * 1000);
-        return dateFormat(date, "ddd, dd mmm yyyy HH:MM:ss GMT");
-    } else {
-        const date = new Date();
-        return dateFormat(date, "ddd, dd mmm yyyy HH:MM:ss GMT");
-    }
 }

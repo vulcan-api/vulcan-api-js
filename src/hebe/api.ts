@@ -2,9 +2,7 @@ import { Keystore } from "./keystore";
 import fetch from 'node-fetch';
 import {getSignatureValues} from '@wulkanowy/uonet-request-signer-node-hebe';
 import { ApiHelper } from "./apiHelper";
-import { APP_NAME, APP_OS, APP_USER_AGENT, APP_VERSION, millis, nowGmt, nowIso, uuid } from "./utils";
-import { time } from "console";
-import { stat } from "fs";
+import { APP_NAME, APP_OS, APP_USER_AGENT, APP_VERSION, millis, nowIso, uuid } from "./utils";
 
 export class Api {
     private keystore: Keystore;
@@ -39,14 +37,14 @@ export class Api {
         if (!this.keystore.fingerprint || !this.keystore.privateKey) {
             throw Error("Keystore is not initialized!");
         }
-        const timestampt = (Date.now() / 1000);
+        const dt = new Date();
         console.log(this.keystore.privateKey);
         const {digest, canonicalUrl, signature} = getSignatureValues(
             this.keystore.fingerprint,
             this.keystore.privateKey,
             payload,
             fullUrl,
-            timestampt
+            dt.toUTCString()
         );
 
         const headers: any = {
@@ -54,7 +52,7 @@ export class Api {
             "vOS": APP_OS,
             "vDeviceModel": this.keystore.deviceModel,
             "vAPI": "1",
-            "vDate": nowGmt(timestampt),
+            "vDate": dt.toUTCString(),
             "vCanonicalUrl": canonicalUrl,
             "Signature": signature,
         }
@@ -80,17 +78,16 @@ export class Api {
             options["body"] = payload;
         }
         try {
+            console.log(options)
             const rawRes = await fetch(fullUrl, options);
             const jsonRes = await rawRes.json();
             const status = jsonRes['Status'];
             const envelope = jsonRes['Envelope'];
-            if (status !== 0) {
-                console.log("hello");
+            if (status.Code !== 0) {
                 throw Error(status["Message"]);
             }
             return envelope;
         } catch(e){
-            console.log("-----------------------------------");
             throw Error(e);
         }
     }

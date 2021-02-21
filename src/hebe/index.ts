@@ -13,7 +13,7 @@ export class VulcanHebe {
     private account?: Account;
     private api?: Api;
 
-    public register = async (keystore: Keystore, token: string,
+    public registerAccount = async (keystore: Keystore, token: string,
     symbol: string, pin: string
     ) => {
         token = token.toUpperCase();
@@ -35,7 +35,7 @@ export class VulcanHebe {
         this.api = new Api(keystore);
         const response: HebeAccount = await this.api.post(fullUrl, body);
 
-        this.account = {
+        return {
             loginId: response.LoginId,
             userLogin: response.UserLogin,
             userName: response.UserName,
