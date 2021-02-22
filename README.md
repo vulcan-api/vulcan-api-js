@@ -1,4 +1,4 @@
-<p align="center"><img src="https://raw.githubusercontent.com/Capure/vulcan-api-js/master/docs/logo.svg" /></p>
+<p align="center"><img src="https://raw.githubusercontent.com/Capure/vulcan-api-js/master/assets/logo.svg" /></p>
 
 # Vulcan Api JS
 
