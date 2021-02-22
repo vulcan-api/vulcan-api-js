@@ -1,8 +1,10 @@
-# vulcan-api-js
+![logo](https://raw.githubusercontent.com/Capure/vulcan-api-js/master/docs/logo.svg)
+
+# Vulcan Api JS
 
 Unoffical Vulcan UONET+ SDK for JavaScript / TypeScript
 
-[![NPM](https://nodei.co/npm/vulcan-api-js.png?downloads=true&downloadRank=true&stars=true)](https://nodei.co/npm/vulcan-api-js/)
+[![Latest Stable Version](https://img.shields.io/npm/v/vulcan-api-js.svg?style=for-the-badge)](https://www.npmjs.com/package/vulcan-api-js)
 
 ## Description
 
