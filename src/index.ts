@@ -1,5 +1,5 @@
 import {Api} from './api';
-import {DATA_TIMETABLE, DEVICE_REGISTER, STUDENT_LIST} from './endpoints';
+import {DATA_LUCKY_NUMBER, DATA_TIMETABLE, DEVICE_REGISTER, STUDENT_LIST} from './endpoints';
 import { HebeAccount } from './hebe_interfaces/account';
 import { Account } from './interfaces/account';
 import {Keystore} from './keystore';
@@ -14,6 +14,9 @@ import { Period } from './interfaces/period';
 import { FilterType } from './apiHelper';
 import { HebeLesson } from './hebe_interfaces/lesson';
 import { Lesson } from './interfaces/lesson';
+import dateFormat from 'dateformat';
+import { HebeLuckyNumber } from './hebe_interfaces/luckyNumber';
+import { LuckyNumber } from './interfaces/luckyNumber';
 
 export * from './keystore';
 
@@ -185,5 +188,16 @@ export class VulcanHebe {
             }
         });
         return lessonsToReturn
+    }
+    public async getLuckyNumber() {
+        const data: HebeLuckyNumber = await this.api.helper.getData(DATA_LUCKY_NUMBER, {
+            "constituentId": this.api.student.school.id,
+            "day": dateFormat(new Date(), "yyyy-mm-dd"),
+        })
+        const dataToReturn: LuckyNumber = {
+            day: data.Day,
+            number: data.Number
+        }
+        return dataToReturn;
     }
 }

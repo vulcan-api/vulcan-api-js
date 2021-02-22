@@ -67,6 +67,7 @@ client.selectStudent().then(() => {
 - getStudents()
 - selectStudent(student)
 - getLessons(dateFrom: Date, dateTo: Date) - date is not required
+- getLuckyNumber()
 ### All the methods in vulcan-api-js return a promise.
 
 ### Contributing

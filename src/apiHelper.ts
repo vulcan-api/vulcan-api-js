@@ -87,4 +87,9 @@ export class ApiHelper {
 
         return await this.api.get(url, query);
     }
+
+    public async getData(endpoint: string, query?: any) {
+        const url = `${DATA_ROOT}/${endpoint}`;
+        return await this.api.get(url, query);
+    }
 }
