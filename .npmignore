@@ -3,3 +3,4 @@
 .env
 dev.js
 tsconfig.json
+/assets
