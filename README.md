@@ -1,4 +1,4 @@
-![logo](https://raw.githubusercontent.com/Capure/vulcan-api-js/master/docs/logo.svg)
+<div style="text-align:center"><img src="https://raw.githubusercontent.com/Capure/vulcan-api-js/master/docs/logo.svg" /></div>
 
 # Vulcan Api JS
 
