@@ -1,6 +1,6 @@
 {
   "name": "vulcan-api-js",
-  "version": "1.9.0",
+  "version": "2.0.0",
   "description": "Unofficial API for UONET+ e-register from Vulcan.",
   "main": "lib/index.js",
   "scripts": {
@@ -15,7 +15,6 @@
   "dependencies": {
     "@babel/runtime": "^7.12.5",
     "@wulkanowy/uonet-request-signer-node-hebe": "^0.1.2",
-    "akeypair": "^0.2.4",
     "axios": "^0.19.2",
     "dateformat": "^4.4.1",
     "node-fetch": "^2.6.1",
@@ -36,10 +35,7 @@
     "@types/node-fetch": "^2.5.7",
     "@types/node-forge": "^0.9.5",
     "@types/uuid": "^8.3.0",
-    "chai": "^4.2.0",
-    "chai-as-promised": "^7.1.1",
     "dotenv": "^8.2.0",
-    "mocha": "^6.0.2",
     "typescript": "^4.1.2"
   },
   "optionalDependencies": {

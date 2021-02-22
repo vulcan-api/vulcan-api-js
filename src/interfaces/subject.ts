@@ -1,6 +1,7 @@
-export interface subject {
-    "id": number,
-    "name": string,
-    "short": string,
-    "postion": number
+export interface Subject {
+    id: number,
+    key: string,
+    name: string,
+    code: string,
+    position: number
 }

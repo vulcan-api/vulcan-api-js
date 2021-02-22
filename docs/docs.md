@@ -1,7 +1,5 @@
 # Docs - vulcan-api-js
 
-## !!! OUT OF DATE !!!
-
 ## Installation
 
 #### YARN
@@ -16,59 +14,60 @@ npm install vulcan-api-js --save
 
 ## Usage
 
-First you need to create a certificate
+First you need to create a keystore, this is where you certificate is stored.
+
+You will have to save it somewhere as that's what gets registered in vulcan.
 
 ```js
-const Vulcan = require('vulcan-api-js');
+const {keystore} = require('vulcan-api-js');
 
-Vulcan.getCertificate("{token}", "{symbol}", "{pin}").then(cert => {
-  // Do something with the certificate
-  // You probably want to save it to a file
-});
+const keystore = new Keystore();
+
+keystore.init(() => {
+    const keystoreDump = keystore.dump();
+    const keystoreString = JSON.stringify(keystoreDump);
+    // Save it somewhere
+})
 
 ```
-Then you will have to set the student
+Then you will have to register the account.
 ```js
-const Vulcan = require('vulcan-api-js');
+const {keystore, registerAccount} = require('vulcan-api-js');
 
-let vulcan = new Vulcan.Vulcan({"Your certificate"});
+const keystore = new Keystore();
 
-vulcan.getStudents().then(students => {
-    students.map(student => {
-        if (student["Imie"] === "Jan"){
-            vulcan.setStudent(student).then(() => {
-                // Here the student is set
-                // And you can start using the vulcan-api
-            });
-        }
-    });
+keystore.load({YOUR-KEYSTORE});
+
+registerAccount(keystore, {TOKEN}, {SYMBOL}, {PIN}).then(account => {
+    const accountString = JSON.stringify(account);
+    // You have to save this as well
 });
 ```
+
+When you have your keystore and account generated, you can load them and use the SDK.
+
+```js
+const {keystore, VulcanHebe} = require('vulcan-api-js');
+
+const keystore = new Keystore();
+
+keystore.load({YOUR-KEYSTORE});
+
+const client = new VulcanHebe(keystore, account);
+
+// Pick your student (defaults to the first one)
+client.selectStudent().then(() => {
+    // You can use the SDK here
+})
+
+```
+
+
 ## Available methods:
 - getStudents()
-- setStudent(student)
-- getGrades()
-- getLessons(date) - date is not required
-- getExams(date) - date is not required
-- getHomework(date) - date is not required
-- getMessages(dateFrom, dateTo) - dateFrom and dateTo are not required
-### All the methods in vulcan-api-js return a promise!
-
-## Development
-
-### Running tests
-
-The tests are running in a live environment so you will have to supply your certificate in the .env file.
-
-#### YARN
-```
-yarn test
-```
-
-#### NPM
-```
-npm run test
-```
+- selectStudent(student)
+- getLessons(dateFrom: Date, dateTo: Date) - date is not required
+### All the methods in vulcan-api-js return a promise.
 
 ### Contributing
 

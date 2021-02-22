@@ -1,16 +1,23 @@
-import { subject } from './subject';
-import { employee } from './employee';
-import { lessonTime } from './lessonTime';
+import { DateTime } from "./dateTime";
+import { LessonRoom } from "./lessonRoom";
+import { Subject } from "./subject";
+import { Teacher } from "./teacher";
+import { TeamClass } from "./teamClass";
+import { TeamVirtual } from "./teamVirtual";
+import { TimeSlot } from "./timeSlot";
 
-export interface lesson {
-    "number": number,
-    "room": string,
-    "group": string | null,
-    "date": string,
-    "time": lessonTime,
-    "changeAnnotation": string,
-    "lineThrough": boolean,
-    "bold": boolean,
-    "teacher": employee,
-    "subject": subject
+export interface Lesson {
+    id?: number,
+    date?: DateTime,
+    timeSlot?: TimeSlot,
+    room?: LessonRoom,
+    teacherPrimary?: Teacher,
+    teacherSecondary?: Teacher,
+    subject?: Subject,
+    event?: string,
+    change?: string,
+    class?: TeamClass,
+    pupilAlias?: string,
+    distribution?: TeamVirtual,
+    visible?: boolean
 }
