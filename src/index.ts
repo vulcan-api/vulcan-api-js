@@ -46,7 +46,7 @@ export const registerAccount = async (keystore: Keystore, token: string,
             loginId: response.LoginId,
             userLogin: response.UserLogin,
             userName: response.UserName,
-            restUrl: response.RestUrl || `${getBaseUrl(token)}/${token}/`
+            restUrl: response.RestUrl || `${await getBaseUrl(token)}/${symbol}/`
         }
 }
 
