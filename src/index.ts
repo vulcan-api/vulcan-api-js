@@ -1,5 +1,5 @@
 import {Api} from './api';
-import {DATA_LUCKY_NUMBER, DATA_TIMETABLE, DEVICE_REGISTER, STUDENT_LIST} from './endpoints';
+import {DATA_GRADE, DATA_LUCKY_NUMBER, DATA_TIMETABLE, DEVICE_REGISTER, STUDENT_LIST} from './endpoints';
 import { HebeAccount } from './hebe_interfaces/account';
 import { Account } from './interfaces/account';
 import {Keystore} from './keystore';
@@ -17,6 +17,8 @@ import { Lesson } from './interfaces/lesson';
 import dateFormat from 'dateformat';
 import { HebeLuckyNumber } from './hebe_interfaces/luckyNumber';
 import { LuckyNumber } from './interfaces/luckyNumber';
+import { HebeGrade } from './hebe_interfaces/grade';
+import { Grade } from './interfaces/grade';
 
 export * from './keystore';
 
@@ -198,6 +200,77 @@ export class VulcanHebe {
             day: data.Day,
             number: data.Number
         }
+        return dataToReturn;
+    }
+
+    private async getPeriodById(periodId: number) {
+        if (!this.student) { throw Error("Student was undefined!") }
+        const arr = this.student.periods.filter(period => {
+            return period.id === periodId;
+        });
+        return arr?.length === 0 ? undefined : arr[0];
+    }
+
+    public async getGrades(lastSync: Date) {
+        const data: HebeGrade[] = await this.api.helper.getList(DATA_GRADE, false, lastSync, undefined, undefined, FilterType.BY_PUPIL);
+        const dataToReturn: Grade[] = await Promise.all(data.map(async (grade) => {
+            return {
+                id: grade.Id,
+                key: grade.Key,
+                pupilId: grade.PupilId,
+                contentRaw: grade.ContentRaw,
+                content: grade.Content,
+                dateCreated: {
+                    timestamp: grade.DateCreated.Timestamp,
+                    date: grade.DateCreated.Date,
+                    time: grade.DateCreated.Time
+                },
+                dateModify: {
+                    timestamp: grade.DateModify.Timestamp,
+                    date: grade.DateModify.Date,
+                    time: grade.DateModify.Time
+                },
+                creator: {
+                    id: grade.Creator.Id,
+                    name: grade.Creator.Name,
+                    surname: grade.Creator.Surname,
+                    displayName: grade.Creator.DisplayName
+                },
+                modifier: {
+                    id: grade.Modifier.Id,
+                    name: grade.Modifier.Name,
+                    surname: grade.Modifier.Surname,
+                    displayName: grade.Modifier.DisplayName
+                },
+                column: {
+                    id: grade.Column.Id,
+                    key: grade.Column.Key,
+                    periodId: grade.Column.PeriodId,
+                    name: grade.Column.Name,
+                    code: grade.Column.Code,
+                    group: grade.Column.Group,
+                    number: grade.Column.Number,
+                    weight: grade.Column.Weight,
+                    subject: {
+                        id: grade.Column.Subject.Id,
+                        key: grade.Column.Subject.Key,
+                        code: grade.Column.Subject.Kod,
+                        position: grade.Column.Subject.Position,
+                        name: grade.Column.Subject.Name
+                    },
+                    category: grade.Column.Category ? {
+                        id: grade.Column.Category.Id,
+                        name: grade.Column.Category.Name,
+                        code: grade.Column.Category.Code
+                    } : undefined,
+                    period: await this.getPeriodById(grade.Column.PeriodId),
+                },
+                value: grade.Value,
+                comment: grade.Comment,
+                numerator: grade.Numerator,
+                denominator: grade.Denominator
+            };
+        }));
         return dataToReturn;
     }
 }
