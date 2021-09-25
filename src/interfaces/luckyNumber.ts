@@ -1,4 +1,4 @@
 export interface LuckyNumber {
-    day: string,
-    number: number
+  day: string;
+  number: number;
 }

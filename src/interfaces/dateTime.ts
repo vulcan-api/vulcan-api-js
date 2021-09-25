@@ -1,5 +1,5 @@
 export interface DateTime {
-    timestamp: number,
-    date: string,
-    time: string
+  timestamp: number;
+  date: string;
+  time: string;
 }

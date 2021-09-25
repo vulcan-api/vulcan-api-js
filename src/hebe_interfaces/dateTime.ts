@@ -1,5 +1,5 @@
 export interface HebeDateTime {
-    Timestamp: number,
-    Date: string,
-    Time: string
+  Timestamp: number;
+  Date: string;
+  Time: string;
 }

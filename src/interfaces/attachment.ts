@@ -1,4 +1,4 @@
 export interface Attachment {
-    name: string,
-    link: string
+  name: string;
+  link: string;
 }

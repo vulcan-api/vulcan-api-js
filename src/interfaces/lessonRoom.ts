@@ -1,4 +1,4 @@
 export interface LessonRoom {
-    id: number,
-    code: string
+  id: number;
+  code: string;
 }

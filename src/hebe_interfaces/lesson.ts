@@ -7,17 +7,17 @@ import { HebeTeamVirtual } from "./teamVirtual";
 import { HebeTimeSlot } from "./timeSlot";
 
 export interface HebeLesson {
-    Id?: number,
-    Date?: HebeDateTime,
-    TimeSlot?: HebeTimeSlot,
-    Room?: HebeLessonRoom,
-    TeacherPrimary?: HebeTeacher,
-    TeacherSecondary?: HebeTeacher,
-    Subject?: HebeSubject,
-    Event?: string,
-    Change?: string,
-    Clazz?: HebeTeamClass,
-    PupilAlias?: string,
-    Distribution?: HebeTeamVirtual,
-    Visible?: boolean
+  Id?: number;
+  Date?: HebeDateTime;
+  TimeSlot?: HebeTimeSlot;
+  Room?: HebeLessonRoom;
+  TeacherPrimary?: HebeTeacher;
+  TeacherSecondary?: HebeTeacher;
+  Subject?: HebeSubject;
+  Event?: string;
+  Change?: string;
+  Clazz?: HebeTeamClass;
+  PupilAlias?: string;
+  Distribution?: HebeTeamVirtual;
+  Visible?: boolean;
 }

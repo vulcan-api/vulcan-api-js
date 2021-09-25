@@ -1,4 +1,4 @@
 export interface HebeLessonRoom {
-    Id: number,
-    Code: string
+  Id: number;
+  Code: string;
 }

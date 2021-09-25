@@ -1,4 +1,4 @@
 export interface HebeLuckyNumber {
-    Day: string,
-    Number: number
+  Day: string;
+  Number: number;
 }

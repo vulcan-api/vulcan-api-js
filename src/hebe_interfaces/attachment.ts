@@ -1,4 +1,4 @@
 export interface HebeAttachment {
-    Name: string,
-    Link: string
+  Name: string;
+  Link: string;
 }

@@ -1,6 +1,6 @@
 export interface Account {
-    loginId: number,
-    userLogin: string,
-    userName: string,
-    restUrl: string
+  loginId: number;
+  userLogin: string;
+  userName: string;
+  restUrl: string;
 }
