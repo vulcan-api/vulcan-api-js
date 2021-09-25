@@ -7,9 +7,13 @@ import { HebeTeamClass } from "./teamClass";
 import { HebeTeamVirtual } from "./teamVirtual";
 import { HebeTimeSlot } from "./timeSlot";
 
-export interface HebeLesson {
+export interface HebeChangedLesson {
   Id?: number;
-  Date?: HebeDateTime;
+  UnitId?: number;
+  ScheduleId?: number;
+  LessonDate?: HebeDateTime;
+  Note?: string;
+  Reason?: string;
   TimeSlot?: HebeTimeSlot;
   Room?: HebeLessonRoom;
   TeacherPrimary?: HebeTeacher;
@@ -17,8 +21,7 @@ export interface HebeLesson {
   Subject?: HebeSubject;
   Event?: string;
   Change?: HebeLessonChanges;
+  ChangeDate?: HebeDateTime;
   Clazz?: HebeTeamClass;
-  PupilAlias?: string;
   Distribution?: HebeTeamVirtual;
-  Visible?: boolean;
 }

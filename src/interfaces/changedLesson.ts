@@ -7,18 +7,21 @@ import { TeamClass } from "./teamClass";
 import { TeamVirtual } from "./teamVirtual";
 import { TimeSlot } from "./timeSlot";
 
-export interface Lesson {
+export interface ChangedLesson {
   id?: number;
-  date?: DateTime;
-  timeSlot?: TimeSlot;
+  unitId?: number;
+  scheduleId?: number;
+  lessonDate?: DateTime;
+  note?: string;
+  reason?: string;
+  time?: TimeSlot;
   room?: LessonRoom;
-  teacherPrimary?: Teacher;
-  teacherSecondary?: Teacher;
+  teacher?: Teacher;
+  secondTeacher?: Teacher;
   subject?: Subject;
   event?: string;
   change?: LessonChanges;
+  changeDate?: DateTime;
   class?: TeamClass;
-  pupilAlias?: string;
   distribution?: TeamVirtual;
-  visible?: boolean;
 }

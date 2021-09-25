@@ -3,6 +3,7 @@ import {
   DATA_GRADE,
   DATA_LUCKY_NUMBER,
   DATA_TIMETABLE,
+  DATA_TIMETABLE_CHANGES,
   DEVICE_REGISTER,
   STUDENT_LIST,
 } from "./endpoints";
@@ -22,6 +23,8 @@ import { HebeLuckyNumber } from "./hebe_interfaces/luckyNumber";
 import { LuckyNumber } from "./interfaces/luckyNumber";
 import { HebeGrade } from "./hebe_interfaces/grade";
 import { Grade } from "./interfaces/grade";
+import { ChangedLesson } from "./interfaces/changedLesson";
+import { HebeChangedLesson } from "./hebe_interfaces/changedLesson";
 
 export * from "./keystore";
 
@@ -192,7 +195,13 @@ export class VulcanHebe {
             }
           : undefined,
         event: item.Event,
-        change: item.Change,
+        change: item.Change
+          ? {
+              id: item.Change?.Id,
+              type: item.Change?.Type,
+              separation: item.Change?.Separation,
+            }
+          : undefined,
         class: item.Clazz
           ? {
               id: item.Clazz.Id,
@@ -216,6 +225,111 @@ export class VulcanHebe {
     });
     return lessonsToReturn;
   }
+
+  public async getChangedLessons(dateFrom?: Date, dateTo?: Date) {
+    const dFrom = dateFrom ? dateFrom : new Date();
+    const dTo = dateTo ? dateTo : new Date();
+    const data: HebeLesson[] = await this.api.helper.getList(
+      DATA_TIMETABLE_CHANGES,
+      false,
+      undefined,
+      dFrom,
+      dTo,
+      FilterType.BY_PUPIL
+    );
+    const lessonsToReturn: ChangedLesson[] = data.map(
+      (item: HebeChangedLesson): ChangedLesson => {
+        return {
+          id: item.Id,
+          unitId: item.UnitId,
+          scheduleId: item.ScheduleId,
+          lessonDate: item.LessonDate
+            ? {
+                timestamp: item.LessonDate.Timestamp,
+                time: item.LessonDate.Time,
+                date: item.LessonDate.Date,
+              }
+            : undefined,
+          note: item.Note,
+          reason: item.Reason,
+          time: item.TimeSlot
+            ? {
+                id: item.TimeSlot.Id,
+                start: item.TimeSlot.Start,
+                end: item.TimeSlot.End,
+                display: item.TimeSlot.Display,
+                position: item.TimeSlot.Position,
+              }
+            : undefined,
+          room: item.Room
+            ? {
+                id: item.Room.Id,
+                code: item.Room.Code,
+              }
+            : undefined,
+          teacher: item.TeacherPrimary
+            ? {
+                id: item.TeacherPrimary.Id,
+                name: item.TeacherPrimary.Name,
+                surname: item.TeacherPrimary.Surname,
+                displayName: item.TeacherPrimary.DisplayName,
+              }
+            : undefined,
+          secondTeacher: item.TeacherSecondary
+            ? {
+                id: item.TeacherSecondary.Id,
+                name: item.TeacherSecondary.Name,
+                surname: item.TeacherSecondary.Surname,
+                displayName: item.TeacherSecondary.DisplayName,
+              }
+            : undefined,
+          subject: item.Subject
+            ? {
+                id: item.Subject.Id,
+                key: item.Subject.Key,
+                name: item.Subject.Name,
+                position: item.Subject.Position,
+                code: item.Subject.Kod,
+              }
+            : undefined,
+          event: item.Event,
+          change: item.Change
+            ? {
+                id: item.Change.Id,
+                separation: item.Change.Separation,
+                type: item.Change.Type,
+              }
+            : undefined,
+          changeDate: item.ChangeDate
+            ? {
+                timestamp: item.ChangeDate.Timestamp,
+                date: item.ChangeDate.Date,
+                time: item.ChangeDate.Time,
+              }
+            : undefined,
+          class: item.Clazz
+            ? {
+                id: item.Clazz.Id,
+                key: item.Clazz.Key,
+                displayName: item.Clazz.DisplayName,
+                symbol: item.Clazz.Symbol,
+              }
+            : undefined,
+          distribution: item.Distribution
+            ? {
+                id: item.Distribution.Id,
+                key: item.Distribution.Key,
+                name: item.Distribution.Name,
+                partType: item.Distribution.PartType,
+                shortcut: item.Distribution.Shortcut,
+              }
+            : undefined,
+        };
+      }
+    );
+    return lessonsToReturn;
+  }
+
   public async getLuckyNumber() {
     const data: HebeLuckyNumber = await this.api.helper.getData(
       DATA_LUCKY_NUMBER,
