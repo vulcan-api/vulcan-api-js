@@ -6,6 +6,9 @@ import crypto from "crypto";
 import { v4 as uuidv4, v5 as uuidv5 } from "uuid";
 import axios from "axios";
 import qs from "querystring";
+import { Account } from "./models";
+import fs from "fs";
+
 export const now = () => {
   return Math.floor(Date.now() / 1000);
 };
@@ -138,3 +141,48 @@ export const nowIso = () => {
   const date = new Date();
   return dateFormat(date, "yyyy-mm-dd HH:MM:ss");
 };
+
+export class AccountTools {
+  public static loadFromObject(account: {
+    loginId: number;
+    userLogin: string;
+    userName: string;
+    restUrl: string;
+  }): Account {
+    const accountToReturn = new Account();
+    accountToReturn.loginId = account.loginId;
+    accountToReturn.userLogin = account.userLogin;
+    accountToReturn.userName = account.userName;
+    accountToReturn.restUrl = account.restUrl;
+    return accountToReturn;
+  }
+
+  public static loadFromJsonString(jsonString: string) {
+    return this.loadFromObject(JSON.parse(jsonString));
+  }
+
+  public static loadFromJsonFile(path: string) {
+    return this.loadFromJsonString(
+      fs.readFileSync(path, { encoding: "utf-8" })
+    );
+  }
+
+  public static dumpToObject(account: Account) {
+    return {
+      loginId: account.loginId,
+      userLogin: account.userLogin,
+      userName: account.userName,
+      restUrl: account.restUrl,
+    };
+  }
+
+  public static dumpToJsonString(account: Account) {
+    return JSON.stringify(this.dumpToObject(account));
+  }
+
+  public static dumpToJsonFile(account: Account, path: string) {
+    fs.writeFileSync(path, this.dumpToJsonString(account), {
+      encoding: "utf-8",
+    });
+  }
+}

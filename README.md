@@ -14,10 +14,6 @@ This project is loosely based on [Vulcan API](https://github.com/kapi2289/vulcan
 
 [Gitbook docs](https://capure.gitbook.io/vulcan-api-js/)
 
-## Work in progress
-
-Please note: Due to the recent deprecation of the API, this library was using, it is currently undergoing major changes and thus might be unusable!
-
 ## License
 
 [MIT](https://github.com/Capure/vulcan-api-js/blob/master/LICENSE)

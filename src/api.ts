@@ -11,8 +11,7 @@ import {
   nowIso,
   uuid,
 } from "./utils";
-import { Student } from "./interfaces/student";
-import { Account } from "./interfaces/account";
+import { Student, Account } from "./models";
 
 export class Api {
   private keystore: Keystore;

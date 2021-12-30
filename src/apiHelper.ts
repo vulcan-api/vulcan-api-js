@@ -6,9 +6,9 @@ import {
   DATA_BY_PUPIL,
   DATA_ROOT,
 } from "./endpoints";
-import { Account } from "./interfaces/account";
-import { Period } from "./interfaces/period";
-import { Student } from "./interfaces/student";
+import { Account } from "./models";
+import { Period } from "./models";
+import { Student } from "./models";
 
 export enum FilterType {
   BY_PUPIL = 0,
