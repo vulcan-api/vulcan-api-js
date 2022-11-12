@@ -106,5 +106,10 @@ dist
 # Babel output
 lib/
 
+#Auto-gen files for development
+package-lock.json
+yarn.lock
+
 # File for testing in development
 dev.js
+dev.ts
