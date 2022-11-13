@@ -8,7 +8,7 @@
     "test": "mocha --reporter spec",
     "type-check": "tsc --noEmit",
     "dev": "node ./dev.js",
-    "dev-ts" : "npx ts-node ./dev.ts"
+    "dev-ts": "npx ts-node ./dev.ts"
   },
   "repository": "https://github.com/Capure/vulcan-api-js.git",
   "author": "Capure",
@@ -38,7 +38,7 @@
     "@rollup/plugin-node-resolve": "^11.2.0",
     "@types/dateformat": "^3.0.1",
     "@types/node": "^14.14.10",
-    "@types/node-fetch": "^2.5.7",
+    "@types/node-fetch": "^2.6.2",
     "@types/node-forge": "^0.9.5",
     "@types/uuid": "^8.3.0",
     "babel-plugin-transform-typescript-metadata": "^0.3.2",

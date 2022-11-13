@@ -113,3 +113,4 @@ yarn.lock
 # File for testing in development
 dev.js
 dev.ts
+account.json
