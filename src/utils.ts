@@ -1,7 +1,6 @@
 import dateFormat from "dateformat";
 
 import forge from "node-forge";
-import crypto from "crypto";
 
 import { v4 as uuidv4, v5 as uuidv5 } from "uuid";
 import axios from "axios";
@@ -82,27 +81,20 @@ export const generateKeyPair = async () => {
   const pki = forge.pki;
 
   const keys: any = await new Promise((resolve, reject) => {
-    crypto.generateKeyPair(
-      "rsa",
-      { modulusLength: 2048 },
-      (err, publicKey, privateKey) => {
+    forge.pki.rsa.generateKeyPair(
+      { bits: 2048, workers: 2 },
+      (err, keypair) => {
         if (err) {
           reject(err);
         } else {
-          resolve({ publicKey, privateKey });
+          resolve(keypair);
         }
       }
     );
   });
-  const publicKey = keys.publicKey
-    .export({ format: "pem", type: "spki" })
-    .toString();
-  const privateKey = keys.privateKey
-    .export({ format: "pem", type: "pkcs8" })
-    .toString();
   const cert = pki.createCertificate();
-  cert.publicKey = forge.pki.publicKeyFromPem(publicKey);
-  cert.privateKey = forge.pki.privateKeyFromPem(privateKey);
+  cert.publicKey = keys.publicKey;
+  cert.privateKey = keys.privateKey;
   cert.serialNumber = "1";
   cert.validity.notBefore = new Date();
   cert.validity.notAfter = addYears(new Date(), 20);
@@ -115,21 +107,21 @@ export const generateKeyPair = async () => {
   cert.setSubject(attrs);
   cert.setIssuer(attrs);
   cert.sign(cert.privateKey, forge.md.sha256.create());
-  const fingerprint = crypto
-    .createHash("sha1")
-    .update(
-      forge.asn1.toDer(pki.certificateToAsn1(cert)).getBytes().toString(),
-      "latin1"
-    )
-    .digest()
-    .toString("hex");
+
+  const fHash = forge.md.sha1.create();
+  fHash.update(forge.asn1.toDer(pki.certificateToAsn1(cert)).getBytes());
+  const fingerprint = fHash.digest().toHex();
+
+  const privateKey = pki.privateKeyToAsn1(keys.privateKey);
+  const privateKeyInfo = pki.wrapRsaPrivateKey(privateKey);
+  const privateKeyPem = pki.privateKeyInfoToPem(privateKeyInfo);
   const certificate = pki
     .certificateToPem(cert)
     .replace("-----BEGIN CERTIFICATE-----", "")
     .replace("-----END CERTIFICATE-----", "")
     .replace(/\r?\n|\r/g, "")
     .trim();
-  const privateKeyToReturn = privateKey
+  const privateKeyToReturn = privateKeyPem
     .replace("-----BEGIN PRIVATE KEY-----", "")
     .replace("-----END PRIVATE KEY-----", "")
     .replace(/\r?\n|\r/g, "")
