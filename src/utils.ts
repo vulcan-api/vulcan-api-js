@@ -7,9 +7,9 @@ import axios from "axios";
 import qs from "querystring";
 import { Account } from "./models";
 export const getFs = async () => {
-  try {
+  if (typeof navigator === "undefined") {
     return await import("fs");
-  } catch (_) {
+  } else {
     return undefined;
   }
 };
