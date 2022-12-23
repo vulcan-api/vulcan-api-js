@@ -4,3 +4,5 @@
 dev.js
 tsconfig.json
 /assets
+keystore.json
+account.json

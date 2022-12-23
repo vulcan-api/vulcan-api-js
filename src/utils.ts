@@ -6,7 +6,13 @@ import { v4 as uuidv4, v5 as uuidv5 } from "uuid";
 import axios from "axios";
 import qs from "querystring";
 import { Account } from "./models";
-import fs from "fs";
+export const getFs = async () => {
+  try {
+    return await import("fs");
+  } catch (_) {
+    return undefined;
+  }
+};
 
 export const now = () => {
   return Math.floor(Date.now() / 1000);
@@ -153,7 +159,13 @@ export class AccountTools {
     return this.loadFromObject(JSON.parse(jsonString));
   }
 
-  public static loadFromJsonFile(path: string) {
+  /**
+   * - since version 3.1 - this method is async
+   */
+  public static async loadFromJsonFile(path: string) {
+    const fs = await getFs();
+    if (fs === undefined)
+      throw new Error("fs module is not supported on this platform.");
     return this.loadFromJsonString(
       fs.readFileSync(path, { encoding: "utf-8" })
     );
@@ -172,7 +184,13 @@ export class AccountTools {
     return JSON.stringify(this.dumpToObject(account));
   }
 
-  public static dumpToJsonFile(account: Account, path: string) {
+  /**
+   * - since version 3.1 - this method is async
+   */
+  public static async dumpToJsonFile(account: Account, path: string) {
+    const fs = await getFs();
+    if (fs === undefined)
+      throw new Error("fs module is not supported on this platform.");
     fs.writeFileSync(path, this.dumpToJsonString(account), {
       encoding: "utf-8",
     });

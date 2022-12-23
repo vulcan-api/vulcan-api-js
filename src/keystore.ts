@@ -1,6 +1,9 @@
-import { defaultDeviceModel, getFirebaseToken, generateKeyPair } from "./utils";
-import fs from "fs";
-
+import {
+  defaultDeviceModel,
+  getFirebaseToken,
+  generateKeyPair,
+  getFs,
+} from "./utils";
 export class Keystore {
   public certificate: string | undefined;
   public fingerprint: string | undefined;
@@ -64,7 +67,13 @@ export class Keystore {
     this.loadFromObject(JSON.parse(jsonString));
   }
 
-  public loadFromJsonFile(path: string) {
+  /**
+   * - since version 3.1 - this method is async
+   */
+  public async loadFromJsonFile(path: string) {
+    const fs = await getFs();
+    if (fs === undefined)
+      throw new Error("fs module is not supported on this platform.");
     this.loadFromJsonString(fs.readFileSync(path, { encoding: "utf-8" }));
   }
 
@@ -82,7 +91,13 @@ export class Keystore {
     return JSON.stringify(this.dumpToObject());
   }
 
-  public dumpToJsonFile(path: string) {
+  /**
+   * - since version 3.1 - this method is async
+   */
+  public async dumpToJsonFile(path: string) {
+    const fs = await getFs();
+    if (fs === undefined)
+      throw new Error("fs module is not supported on this platform.");
     fs.writeFileSync(path, this.dumpToJsonString(), { encoding: "utf-8" });
   }
 
