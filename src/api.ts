@@ -1,6 +1,6 @@
 import { Keystore } from "./keystore";
 import fetch from "node-fetch";
-import { getSignatureValues } from "@wulkanowy/uonet-request-signer-node-hebe";
+import { getSignatureValues } from "./signer";
 import { ApiHelper } from "./apiHelper";
 import {
   APP_NAME,

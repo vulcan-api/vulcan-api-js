@@ -1,6 +1,6 @@
 {
   "name": "vulcan-api-js",
-  "version": "3.0.2",
+  "version": "3.0.3",
   "description": "Unofficial API for UONET+ e-register from Vulcan.",
   "main": "lib/index.js",
   "scripts": {
@@ -15,7 +15,6 @@
   "license": "MIT",
   "dependencies": {
     "@babel/runtime": "^7.12.5",
-    "@wulkanowy/uonet-request-signer-node-hebe": "^0.1.2",
     "axios": "^1.1.3",
     "dateformat": "^4.4.1",
     "node-fetch": "^2.6.1",
