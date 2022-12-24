@@ -1,4 +1,5 @@
 import forge from "node-forge";
+import { Buffer } from "buffer/";
 
 function getDigest(body: any) {
   if (body == null) return "";
