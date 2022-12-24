@@ -114,3 +114,4 @@ yarn.lock
 dev.js
 dev.ts
 account.json
+keystore.json

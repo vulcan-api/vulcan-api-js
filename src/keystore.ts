@@ -1,9 +1,4 @@
-import {
-  defaultDeviceModel,
-  getFirebaseToken,
-  generateKeyPair,
-  getFs,
-} from "./utils";
+import { defaultDeviceModel, getFirebaseToken, generateKeyPair } from "./utils";
 export class Keystore {
   public certificate: string | undefined;
   public fingerprint: string | undefined;
@@ -68,13 +63,10 @@ export class Keystore {
   }
 
   /**
-   * - since version 3.1 - this method is async
+   * @deprecated since version 3.2 - use `loadFromJsonString()` instead
    */
   public async loadFromJsonFile(path: string) {
-    const fs = await getFs();
-    if (fs === undefined)
-      throw new Error("fs module is not supported on this platform.");
-    this.loadFromJsonString(fs.readFileSync(path, { encoding: "utf-8" }));
+    throw new Error("Deprecated method. Use loadFromJsonString instead.");
   }
 
   public dumpToObject() {
@@ -92,13 +84,10 @@ export class Keystore {
   }
 
   /**
-   * - since version 3.1 - this method is async
+   * @deprecated since version 3.2 - use `dumpToJsonString()` instead
    */
   public async dumpToJsonFile(path: string) {
-    const fs = await getFs();
-    if (fs === undefined)
-      throw new Error("fs module is not supported on this platform.");
-    fs.writeFileSync(path, this.dumpToJsonString(), { encoding: "utf-8" });
+    throw new Error("Deprecated method. Use dumpToJsonString instead.");
   }
 
   /**
