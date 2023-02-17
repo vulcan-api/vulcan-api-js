@@ -2,6 +2,7 @@ import { Api } from "./api";
 import {
   DATA_GRADE,
   DATA_LUCKY_NUMBER,
+  DATA_MESSAGEBOX,
   DATA_TIMETABLE,
   DATA_TIMETABLE_CHANGES,
   DEVICE_REGISTER,
@@ -19,6 +20,7 @@ import {
   Grade,
   ChangedLesson,
 } from "./models";
+import { MessageBox } from "./models/messageBox";
 
 export { AccountTools } from "./utils";
 export * from "./keystore";
@@ -153,5 +155,15 @@ export class VulcanHebe {
         ).serialize(grade)
       )
     )) as Grade[];
+  }
+  public async getMessageBoxes() {
+    const data = await this.api.helper.getList(
+      DATA_MESSAGEBOX,
+    );
+    return (Promise.all(
+      data.map(async (messageBox: any) =>
+        new MessageBox().serialize(messageBox)
+      )
+    ));
   }
 }

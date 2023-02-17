@@ -17,3 +17,6 @@ export const DATA_GRADE_AVERAGE = "grade/average";
 export const DATA_HOMEWORK = "homework";
 export const DATA_TIMETABLE = "schedule";
 export const DATA_TIMETABLE_CHANGES = "schedule/changes";
+
+export const DATA_MESSAGEBOX = "messagebox"
+export const DATA_MESSAGE = "messagebox/message"
