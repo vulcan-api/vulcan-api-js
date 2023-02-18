@@ -5,6 +5,7 @@ export const DATA_ROOT = "api/mobile";
 export const DATA_BY_PUPIL = "byPupil";
 export const DATA_BY_PERSON = "byPerson";
 export const DATA_BY_PERIOD = "byPeriod";
+export const DATA_BY_MESSAGEBOX = "byBox";
 export const DATA_DELETED = "deleted";
 
 export const DATA_INTERNAL_TIME = "internal/time";

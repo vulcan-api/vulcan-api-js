@@ -2,25 +2,20 @@ import { Api } from "./api";
 import {
   DATA_GRADE,
   DATA_LUCKY_NUMBER,
+  DATA_MESSAGE,
   DATA_MESSAGEBOX,
   DATA_TIMETABLE,
   DATA_TIMETABLE_CHANGES,
   DEVICE_REGISTER,
-  STUDENT_LIST,
+  STUDENT_LIST
 } from "./endpoints";
 import { Keystore } from "./keystore";
-import { uuid, getBaseUrl, APP_OS } from "./utils";
+import { APP_OS, getBaseUrl, uuid } from "./utils";
 import { FilterType } from "./apiHelper";
 import dateFormat from "dateformat";
-import {
-  Account,
-  LuckyNumber,
-  Student,
-  Lesson,
-  Grade,
-  ChangedLesson,
-} from "./models";
+import { Account, ChangedLesson, Grade, Lesson, LuckyNumber, Student } from "./models";
 import { MessageBox } from "./models/messageBox";
+import { Message } from "./models/message";
 
 export { AccountTools } from "./utils";
 export * from "./keystore";
@@ -161,8 +156,25 @@ export class VulcanHebe {
       DATA_MESSAGEBOX,
     );
     return (Promise.all(
-      data.map(async (messageBox: any) =>
+      data.map(async (messageBox: MessageBox) =>
         new MessageBox().serialize(messageBox)
+      )
+    ));
+  }
+  public async getMessages(messageBox: string) {
+    const data = await this.api.helper.getList(
+      DATA_MESSAGE,
+      undefined,
+      undefined,
+      undefined,
+      undefined,
+      FilterType.BY_MESSAGEBOX,
+      messageBox,
+      1,
+    );
+    return (Promise.all(
+      data.map(async (message: Message) =>
+        new Message().serialize(message)
       )
     ));
   }

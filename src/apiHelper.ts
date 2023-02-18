@@ -1,10 +1,11 @@
 import dateFormat from "dateformat";
 import { Api } from "./api";
 import {
+  DATA_BY_MESSAGEBOX,
   DATA_BY_PERIOD,
   DATA_BY_PERSON,
   DATA_BY_PUPIL,
-  DATA_ROOT,
+  DATA_ROOT
 } from "./endpoints";
 import { Account } from "./models";
 import { Period } from "./models";
@@ -25,6 +26,8 @@ export const getEndpoint = (type: FilterType) => {
       return DATA_BY_PERSON;
     case FilterType.BY_PERIOD:
       return DATA_BY_PERIOD;
+    case FilterType.BY_MESSAGEBOX:
+      return DATA_BY_MESSAGEBOX;
     default:
       return null;
   }
@@ -81,6 +84,7 @@ export class ApiHelper {
         if(!messageBox)
           throw Error('No messageBox specified!');
         query['box'] = messageBox;
+        break;
       default:
         break;
     }
