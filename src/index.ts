@@ -1,6 +1,7 @@
 import { Api } from "./api";
 import {
   DATA_GRADE,
+  DATA_HOMEWORK,
   DATA_LUCKY_NUMBER,
   DATA_MESSAGE,
   DATA_MESSAGEBOX,
@@ -16,6 +17,7 @@ import dateFormat from "dateformat";
 import { Account, ChangedLesson, Grade, Lesson, LuckyNumber, Student } from "./models";
 import { MessageBox } from "./models/messageBox";
 import { Message } from "./models/message";
+import { Homework } from "./models/homework";
 
 export { AccountTools } from "./utils";
 export * from "./keystore";
@@ -175,6 +177,21 @@ export class VulcanHebe {
     return (Promise.all(
       data.map(async (message: Message) =>
         new Message().serialize(message)
+      )
+    ));
+  }
+  public async getHomework() {
+    const data = await this.api.helper.getList(
+      DATA_HOMEWORK,
+      undefined,
+      undefined,
+      undefined,
+      undefined,
+      FilterType.BY_PUPIL
+    );
+    return (Promise.all(
+      data.map(async (homework: Homework) =>
+        new Homework().serialize(homework)
       )
     ));
   }
