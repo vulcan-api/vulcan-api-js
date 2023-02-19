@@ -1,5 +1,6 @@
 import { Api } from "./api";
 import {
+  DATA_ATTENDANCE,
   DATA_GRADE,
   DATA_HOMEWORK,
   DATA_LUCKY_NUMBER,
@@ -18,6 +19,7 @@ import { Account, ChangedLesson, Grade, Lesson, LuckyNumber, Student } from "./m
 import { MessageBox } from "./models/messageBox";
 import { Message } from "./models/message";
 import { Homework } from "./models/homework";
+import { Attendance } from "./models/attendance";
 
 export { AccountTools } from "./utils";
 export * from "./keystore";
@@ -192,6 +194,23 @@ export class VulcanHebe {
     return (Promise.all(
       data.map(async (homework: Homework) =>
         new Homework().serialize(homework)
+      )
+    ));
+  }
+  public async getAttendance(from: Date, to: Date) {
+    const millisInOneDay = 86400000;
+    to.setTime(to.getTime() + millisInOneDay);
+    const data = await this.api.helper.getList(
+      DATA_ATTENDANCE,
+      false,
+      undefined,
+      from,
+      to,
+      FilterType.BY_PUPIL
+    );
+    return (Promise.all(
+      data.map(async (attendance: Attendance) =>
+        new Attendance().serialize(attendance)
       )
     ));
   }

@@ -21,3 +21,4 @@ export const DATA_TIMETABLE_CHANGES = "schedule/changes";
 
 export const DATA_MESSAGEBOX = "messagebox"
 export const DATA_MESSAGE = "messagebox/message"
+export const DATA_ATTENDANCE = "lesson";
