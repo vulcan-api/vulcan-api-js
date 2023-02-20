@@ -1,6 +1,6 @@
 import { Api } from "./api";
 import {
-  DATA_ATTENDANCE,
+  DATA_ATTENDANCE, DATA_EXAM,
   DATA_GRADE,
   DATA_HOMEWORK,
   DATA_LUCKY_NUMBER,
@@ -20,6 +20,7 @@ import { MessageBox } from "./models/messageBox";
 import { Message } from "./models/message";
 import { Homework } from "./models/homework";
 import { Attendance } from "./models/attendance";
+import {Exam} from "./models/exam";
 
 export { AccountTools } from "./utils";
 export * from "./keystore";
@@ -212,6 +213,22 @@ export class VulcanHebe {
       data.map(async (attendance: Attendance) =>
         new Attendance().serialize(attendance)
       )
+    ));
+  }
+  public async getExams(lastSync?: Date): Promise<Exam[]> {
+    const data = await this.api.helper.getList(
+        DATA_EXAM,
+        false,
+        lastSync,
+        undefined,
+        undefined,
+        FilterType.BY_PUPIL
+    );
+    console.log(data);
+    return (Promise.all(
+        data.map(async (exam: any) =>
+          new Exam().serialize(exam)
+        )
     ));
   }
 }
