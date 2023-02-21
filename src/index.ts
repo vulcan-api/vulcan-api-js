@@ -224,7 +224,6 @@ export class VulcanHebe {
         undefined,
         FilterType.BY_PUPIL
     );
-    console.log(data);
     return (Promise.all(
         data.map(async (exam: any) =>
           new Exam().serialize(exam)
