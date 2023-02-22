@@ -1,24 +1,26 @@
 import { Api } from "./api";
 import {
+  DATA_ATTENDANCE, DATA_EXAM,
   DATA_GRADE,
+  DATA_HOMEWORK,
   DATA_LUCKY_NUMBER,
+  DATA_MESSAGE,
+  DATA_MESSAGEBOX,
   DATA_TIMETABLE,
   DATA_TIMETABLE_CHANGES,
   DEVICE_REGISTER,
-  STUDENT_LIST,
+  STUDENT_LIST
 } from "./endpoints";
 import { Keystore } from "./keystore";
-import { uuid, getBaseUrl, APP_OS } from "./utils";
+import { APP_OS, getBaseUrl, uuid } from "./utils";
 import { FilterType } from "./apiHelper";
 import dateFormat from "dateformat";
-import {
-  Account,
-  LuckyNumber,
-  Student,
-  Lesson,
-  Grade,
-  ChangedLesson,
-} from "./models";
+import { Account, ChangedLesson, Grade, Lesson, LuckyNumber, Student } from "./models";
+import { MessageBox } from "./models/messageBox";
+import { Message } from "./models/message";
+import { Homework } from "./models/homework";
+import { Attendance } from "./models/attendance";
+import {Exam} from "./models/exam";
 
 export { AccountTools } from "./utils";
 export * from "./keystore";
@@ -153,5 +155,79 @@ export class VulcanHebe {
         ).serialize(grade)
       )
     )) as Grade[];
+  }
+  public async getMessageBoxes() {
+    const data = await this.api.helper.getList(
+      DATA_MESSAGEBOX,
+    );
+    return (Promise.all(
+      data.map(async (messageBox: MessageBox) =>
+        new MessageBox().serialize(messageBox)
+      )
+    ));
+  }
+  public async getMessages(messageBox: string) {
+    const data = await this.api.helper.getList(
+      DATA_MESSAGE,
+      undefined,
+      undefined,
+      undefined,
+      undefined,
+      FilterType.BY_MESSAGEBOX,
+      messageBox,
+      1,
+    );
+    return (Promise.all(
+      data.map(async (message: Message) =>
+        new Message().serialize(message)
+      )
+    ));
+  }
+  public async getHomework() {
+    const data = await this.api.helper.getList(
+      DATA_HOMEWORK,
+      undefined,
+      undefined,
+      undefined,
+      undefined,
+      FilterType.BY_PUPIL
+    );
+    return (Promise.all(
+      data.map(async (homework: Homework) =>
+        new Homework().serialize(homework)
+      )
+    ));
+  }
+  public async getAttendance(from: Date, to: Date) {
+    const millisInOneDay = 86400000;
+    to.setTime(to.getTime() + millisInOneDay);
+    const data = await this.api.helper.getList(
+      DATA_ATTENDANCE,
+      false,
+      undefined,
+      from,
+      to,
+      FilterType.BY_PUPIL
+    );
+    return (Promise.all(
+      data.map(async (attendance: Attendance) =>
+        new Attendance().serialize(attendance)
+      )
+    ));
+  }
+  public async getExams(lastSync?: Date): Promise<Exam[]> {
+    const data = await this.api.helper.getList(
+        DATA_EXAM,
+        false,
+        lastSync,
+        undefined,
+        undefined,
+        FilterType.BY_PUPIL
+    );
+    return (Promise.all(
+        data.map(async (exam: any) =>
+          new Exam().serialize(exam)
+        )
+    ));
   }
 }

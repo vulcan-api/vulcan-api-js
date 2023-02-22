@@ -1,10 +1,11 @@
 import dateFormat from "dateformat";
 import { Api } from "./api";
 import {
+  DATA_BY_MESSAGEBOX,
   DATA_BY_PERIOD,
   DATA_BY_PERSON,
   DATA_BY_PUPIL,
-  DATA_ROOT,
+  DATA_ROOT
 } from "./endpoints";
 import { Account } from "./models";
 import { Period } from "./models";
@@ -14,6 +15,7 @@ export enum FilterType {
   BY_PUPIL = 0,
   BY_PERSON = 1,
   BY_PERIOD = 2,
+  BY_MESSAGEBOX = 3,
 }
 
 export const getEndpoint = (type: FilterType) => {
@@ -24,6 +26,8 @@ export const getEndpoint = (type: FilterType) => {
       return DATA_BY_PERSON;
     case FilterType.BY_PERIOD:
       return DATA_BY_PERIOD;
+    case FilterType.BY_MESSAGEBOX:
+      return DATA_BY_MESSAGEBOX;
     default:
       return null;
   }
@@ -38,11 +42,13 @@ export class ApiHelper {
 
   public async getList(
     endpoint: string,
-    deleted: boolean,
+    deleted: boolean = false,
     lastSync?: Date,
     dateFrom?: Date,
     dateTo?: Date,
     filterType?: FilterType,
+    messageBox?: string,
+    folder?: number,
     params?: any
   ) {
     let url = "";
@@ -74,6 +80,11 @@ export class ApiHelper {
         query["periodId"] = period.id;
         query["pupilId"] = student.pupil.id;
         break;
+      case FilterType.BY_MESSAGEBOX:
+        if(!messageBox)
+          throw Error('No messageBox specified!');
+        query['box'] = messageBox;
+        break;
       default:
         break;
     }
@@ -82,6 +93,9 @@ export class ApiHelper {
     }
     if (dateTo) {
       query["dateTo"] = dateFormat(dateTo, "yyyy-mm-dd");
+    }
+    if (folder) {
+      query['folder'] = folder;
     }
     query["lastId"] = "-2147483648"; // Comment from vulcan-api for python: don't ask, it's just Vulcan
     query["pageSize"] = 500;

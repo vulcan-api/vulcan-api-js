@@ -8,7 +8,7 @@
     "test": "mocha --reporter spec",
     "type-check": "tsc --noEmit",
     "dev": "node ./dev.js",
-    "dev-ts": "npx ts-node ./dev.ts"
+    "dev-ts": "yarn run prepublish && npx ts-node ./dev.ts"
   },
   "repository": "https://github.com/Capure/vulcan-api-js.git",
   "author": "Capure",
