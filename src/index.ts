@@ -19,6 +19,7 @@ import { Account, ChangedLesson, Grade, Lesson, LuckyNumber, Student, MessageBox
 
 export { AccountTools } from "./utils";
 export * from "./keystore";
+export * from "./models";
 
 export const registerAccount = async (
   keystore: Keystore,
