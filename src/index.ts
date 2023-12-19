@@ -15,15 +15,11 @@ import { Keystore } from "./keystore";
 import { APP_OS, getBaseUrl, uuid } from "./utils";
 import { FilterType } from "./apiHelper";
 import dateFormat from "dateformat";
-import { Account, ChangedLesson, Grade, Lesson, LuckyNumber, Student } from "./models";
-import { MessageBox } from "./models/messageBox";
-import { Message } from "./models/message";
-import { Homework } from "./models/homework";
-import { Attendance } from "./models/attendance";
-import {Exam} from "./models/exam";
+import { Account, ChangedLesson, Grade, Lesson, LuckyNumber, Student, MessageBox, Message, Homework, Attendance, Exam } from "./models";
 
 export { AccountTools } from "./utils";
 export * from "./keystore";
+export * from "./models";
 
 export const registerAccount = async (
   keystore: Keystore,
