@@ -6,8 +6,8 @@ const config: Config = {
   title: 'vulcan-api-js',
   tagline: 'Unoffical Vulcan UONET+ SDK for JavaScript / TypeScript',
   favicon: 'img/favicon.ico',
-  url: 'https://avorty.github.io/',
-  baseUrl: '/vulcan-api-js',
+  url: 'https://avorty.github.io',
+  baseUrl: '/vulcan-api-js/',
 
   // GitHub pages deployment config.
   // If you aren't using GitHub pages, you don't need these.
