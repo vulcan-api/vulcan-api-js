@@ -11,7 +11,7 @@ npm install vulcan-api-js
 
 YARN
 ```bash
-yarn install vulcan-api-js
+yarn add vulcan-api-js
 ```
 
 PNPM
