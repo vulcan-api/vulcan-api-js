@@ -10,7 +10,7 @@
     "dev": "node ./dev.js",
     "dev-ts": "yarn run prepublish && npx ts-node ./dev.ts"
   },
-  "repository": "https://github.com/Capure/vulcan-api-js.git",
+  "repository": "https://github.com/avorty/vulcan-api-js.git",
   "author": "Capure",
   "license": "MIT",
   "dependencies": {
