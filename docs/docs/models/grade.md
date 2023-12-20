@@ -16,7 +16,7 @@ An object representing a grade.
 - (dateModify) - [DateTime](./date_time)
 - (creator) - [Teacher](./teacher)
 - (modifier) - [Teacher](./teacher)
-- (column) - [GradeColumn][./grade_column]
+- (column) - [GradeColumn](./grade_column)
 - (value?) - number
 - (comment?) - string
 - (numerator?) - string
