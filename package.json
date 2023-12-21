@@ -5,7 +5,7 @@
   "main": "lib/index.js",
   "scripts": {
     "prepublish": "rollup -c & yarn tsc",
-    "type-check": "tsc --noEmit"
+    "type-check": "tsc"
   },
   "repository": "https://github.com/avorty/vulcan-api-js.git",
   "homepage": "https://avorty.github.io/vulcan-api-js",

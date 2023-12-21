@@ -96,7 +96,7 @@ export class Api {
     }
     try {
       const rawRes = await fetch(fullUrl, options);
-      const jsonRes = await rawRes.json();
+      const jsonRes: any = await rawRes.json();
       const status = jsonRes["Status"];
       const envelope = jsonRes["Envelope"];
       if (status.Code !== 0) {
