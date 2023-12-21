@@ -115,3 +115,6 @@ dev.js
 dev.ts
 account.json
 keystore.json
+
+# Other package managers
+pnpm-lock.yaml
