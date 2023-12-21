@@ -11,7 +11,8 @@
     "dev-ts": "yarn run prepublish && npx ts-node ./dev.ts"
   },
   "repository": "https://github.com/avorty/vulcan-api-js.git",
-  "author": "Capure",
+  "homepage": "https://avorty.github.io/vulcan-api-js",
+  "author": "Avorty",
   "license": "MIT",
   "dependencies": {
     "@babel/runtime": "^7.12.5",

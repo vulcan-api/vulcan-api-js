@@ -12,7 +12,7 @@ This project is loosely based on [Vulcan API](https://github.com/kapi2289/vulcan
 
 ## Docs
 
-[Gitbook docs](https://capure.gitbook.io/vulcan-api-js/)
+You can find the docs [here](https://avorty.github.io/vulcan-api-js)
 
 ## License
 

@@ -1,7 +1,7 @@
 name: Publish to NPM
 on:
   release:
-    types: [created]
+    types: [published]
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -16,8 +16,18 @@ jobs:
           node-version: ${{ matrix.node-version }}
           registry-url: 'https://registry.npmjs.org'
       - name: Install dependencies and build
-        run: npm run prepublish
-      - name: Publish package
-        run: npm publish
+        run: yarn && yarn prepublish
+      - name: Extract tag version
+        id: extract_tag
+        run: echo ::set-output name=VERSION::${GITHUB_REF#refs/tags/v}
+      - name: Update version in package.json
+        run: |
+          npm --no-git-tag-version version ${{ steps.extract_tag.outputs.VERSION }}
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git config --global user.name "github-actions[bot]"
+          git commit -am "chore: bump version to ${{ steps.extract_tag.outputs.VERSION }}"
+          git push origin HEAD:main
+      - name: Publish to npm
+        run: npm publish --access public
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
