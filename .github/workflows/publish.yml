@@ -10,6 +10,9 @@ jobs:
         node-version: [18.x]
     steps:
       - uses: actions/checkout@v4
+        with: 
+          fetch-depth: 0
+          token: ${{ secrets.AVORTYBOT_TOKEN }}
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
@@ -23,9 +26,10 @@ jobs:
       - name: Update version in package.json
         run: |
           npm --no-git-tag-version version ${{ steps.extract_tag.outputs.VERSION }}
-          git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          git config --global user.name "github-actions[bot]"
+          git config --global user.email "contact.avorty@gmail.com"
+          git config --global user.name "AvortyBot"
           git commit -am "chore: bump version to ${{ steps.extract_tag.outputs.VERSION }}"
+          git push origin HEAD:main
       - name: Publish to npm
         run: npm publish --access public
         env:
