@@ -32,8 +32,14 @@ export default {
     babel({ extensions, include: ['src/**/*'], babelHelpers: 'runtime' }),
   ],
 
-  output: [{
-    file: pkg.main,
-    format: 'cjs',
-  }]
+  output: [
+    {
+      file: pkg.exports.import,
+      format: 'es',
+    },
+    {
+      file: pkg.exports.require,
+      format: 'cjs',
+    },
+  ],
 };

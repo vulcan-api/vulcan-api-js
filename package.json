@@ -11,6 +11,11 @@
   "homepage": "https://avorty.github.io/vulcan-api-js",
   "author": "Avorty",
   "license": "MIT",
+  "type": "module",
+  "exports": {
+    "import": "./lib/index.js",
+    "require": "./lib/index.cjs"
+  },
   "dependencies": {
     "@babel/runtime": "^7.23.6",
     "axios": "^1.6.2",
