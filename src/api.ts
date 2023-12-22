@@ -1,5 +1,5 @@
 import { Keystore } from "./keystore";
-import fetch from "node-fetch";
+import "cross-fetch/polyfill";
 import { getSignatureValues } from "./signer";
 import { ApiHelper } from "./apiHelper";
 import {
