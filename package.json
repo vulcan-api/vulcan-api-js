@@ -4,19 +4,13 @@
   "description": "Unofficial API for UONET+ e-register from Vulcan.",
   "main": "lib/index.js",
   "scripts": {
-    "prepublish": "rollup -c & yarn tsc",
+    "prepublish": "rollup -c rollup.config.mjs & yarn tsc",
     "type-check": "tsc"
   },
   "repository": "https://github.com/avorty/vulcan-api-js.git",
   "homepage": "https://avorty.github.io/vulcan-api-js",
   "author": "Avorty",
   "license": "MIT",
-  "type": "module",
-  "imports": {
-    ".json": {
-      "type": "json"
-    }
-  },
   "dependencies": {
     "@babel/runtime": "^7.23.6",
     "axios": "^1.6.2",
