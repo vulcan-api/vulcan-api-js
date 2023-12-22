@@ -121,3 +121,4 @@ pnpm-lock.yaml
 
 # IDE's
 .idea/
+.vscode/
