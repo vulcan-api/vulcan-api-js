@@ -1,7 +1,7 @@
 {
   "main": "lib/index.js",
   "name": "vulcan-api-js",
-  "version": "3.5.2",
+  "version": "3.5.3",
   "description": "Unofficial API for UONET+ e-register from Vulcan.",
   "scripts": {
     "prepublish": "rollup -c rollup.config.mjs & yarn tsc",
