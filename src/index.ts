@@ -15,6 +15,7 @@ import { Keystore } from "./keystore";
 import { APP_OS, getBaseUrl, uuid } from "./utils";
 import { FilterType } from "./apiHelper";
 import dateFormat from "dateformat";
+import moment from "moment";
 import { Account, ChangedLesson, Grade, Lesson, LuckyNumber, Student, MessageBox, Message, Homework, Attendance, Exam } from "./models";
 
 export { AccountTools } from "./utils";
@@ -62,7 +63,7 @@ export class VulcanHebe {
   }
 
   public async getStudents() {
-    const data = await this.api.get(STUDENT_LIST);
+    const data: any = await this.api.get(STUDENT_LIST);
     const studentsToReturn: Student[] = data.map(
       (item: any): Student => new Student().serialize(item)
     );
@@ -120,7 +121,7 @@ export class VulcanHebe {
   public async getLuckyNumber(): Promise<LuckyNumber> {
     const data = await this.api.helper.getData(DATA_LUCKY_NUMBER, {
       constituentId: this.api.student.school.id,
-      day: dateFormat(new Date(), "yyyy-mm-dd"),
+      day: moment().format("yyyy-mm-dd"),
     });
     return new LuckyNumber().serialize(data);
   }

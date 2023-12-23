@@ -118,3 +118,7 @@ keystore.json
 
 # Other package managers
 pnpm-lock.yaml
+
+# IDE's
+.idea/
+.vscode/

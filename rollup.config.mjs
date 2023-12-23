@@ -2,11 +2,14 @@ import commonjs from '@rollup/plugin-commonjs';
 import resolve from '@rollup/plugin-node-resolve';
 import babel from '@rollup/plugin-babel';
 import json from '@rollup/plugin-json';
-import pkg from './package.json';
+import fs from 'fs';
 
 const extensions = [
   '.js', '.jsx', '.ts', '.tsx',
 ];
+
+const packageRaw = fs.readFileSync("./package.json");
+const pkg = JSON.parse(packageRaw);
 
 const name = 'RollupTypeScriptBabel';
 
@@ -29,8 +32,14 @@ export default {
     babel({ extensions, include: ['src/**/*'], babelHelpers: 'runtime' }),
   ],
 
-  output: [{
-    file: pkg.main,
-    format: 'cjs',
-  }]
+  output: [
+    {
+      file: pkg.exports.import,
+      format: 'es',
+    },
+    {
+      file: pkg.exports.require,
+      format: 'cjs',
+    },
+  ],
 };

@@ -1,4 +1,4 @@
-import dateFormat from "dateformat";
+import moment from 'moment';
 
 import forge from "node-forge";
 
@@ -128,10 +128,7 @@ export const generateKeyPair = async () => {
   return { certificate, fingerprint, privateKey: privateKeyToReturn };
 };
 
-export const nowIso = () => {
-  const date = new Date();
-  return dateFormat(date, "yyyy-mm-dd HH:MM:ss");
-};
+export const nowIso = () => moment().format('YYYY-MM-DD HH:mm:ss');
 
 export class AccountTools {
   public static loadFromObject(account: {

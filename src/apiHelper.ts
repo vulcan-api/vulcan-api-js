@@ -1,4 +1,4 @@
-import dateFormat from "dateformat";
+import moment from 'moment';
 import { Api } from "./api";
 import {
   DATA_BY_MESSAGEBOX,
@@ -89,20 +89,19 @@ export class ApiHelper {
         break;
     }
     if (dateFrom) {
-      query["dateFrom"] = dateFormat(dateFrom, "yyyy-mm-dd");
+      query["dateFrom"] = moment(dateFrom).format("yyyy-mm-dd");
     }
     if (dateTo) {
-      query["dateTo"] = dateFormat(dateTo, "yyyy-mm-dd");
+      query["dateTo"] = moment(dateTo).format("yyyy-mm-dd");
     }
     if (folder) {
       query['folder'] = folder;
     }
     query["lastId"] = "-2147483648"; // Comment from vulcan-api for python: don't ask, it's just Vulcan
     query["pageSize"] = 500;
-    query["lastSyncDate"] = dateFormat(
-      lastSync || new Date("1970"),
-      "yyyy-mm-dd HH:MM:ss"
-    );
+    query["lastSyncDate"] = moment(
+        lastSync || new Date("1970"),
+    ).format("yyyy-mm-dd HH:MM:ss");
 
     if (params) {
       query = { ...query, ...params };
