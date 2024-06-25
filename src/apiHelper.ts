@@ -89,10 +89,10 @@ export class ApiHelper {
         break;
     }
     if (dateFrom) {
-      query["dateFrom"] = moment(dateFrom).format("yyyy-mm-dd");
+      query["dateFrom"] = moment(dateFrom).format("YYYY-MM-DD");
     }
     if (dateTo) {
-      query["dateTo"] = moment(dateTo).format("yyyy-mm-dd");
+      query["dateTo"] = moment(dateTo).format("YYYY-MM-DD");
     }
     if (folder) {
       query['folder'] = folder;
